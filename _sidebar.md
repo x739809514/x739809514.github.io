@@ -1,6 +1,6 @@
 <!-- docs/_sidebar.md -->
 
-* [首页](/README.md)
+* [CV](/Connect.md)
 * [指南](/guide.md)
 
 * Projects
