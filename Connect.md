@@ -1,4 +1,4 @@
-## JialiangXin(Russell)
+## JialiangXin
 
 ### Connect
 
