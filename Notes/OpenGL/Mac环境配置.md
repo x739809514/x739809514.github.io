@@ -1,11 +1,11 @@
 ## 安装
 首先需要安装三个东西, CMake, GLFW, GLEW。下面是下载路径
 
-CMake： [CMake](https://link.zhihu.com/?target=https%3A//cmake.org/)
+CMake： [CMake](https://cmake.org)
 
-GLFW: [GLFW - Download](https://link.zhihu.com/?target=http%3A//www.glfw.org/download.html)
+GLFW: [GLFW - Download](https://www.glfw.org/download.html)
 
-GLEW: [http://glew.sourceforge.net](https://link.zhihu.com/?target=http%3A//glew.sourceforge.net/)
+GLEW: [http://glew.sourceforge.net](https://glew.sourceforge.net)
 
 Xcode: go to MacAPPStore
 
