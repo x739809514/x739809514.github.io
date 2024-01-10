@@ -1,7 +1,6 @@
 <!-- docs/_sidebar.md -->
 
-* [CV](/Connect.md)
-* [指南](/guide.md)
+* [CV](/README.md)
 
 * Projects
     * [**InputSystem**](/Proj/InputSystem/)
