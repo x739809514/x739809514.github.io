@@ -1,3 +1,4 @@
+# Mac下配置OpenGL
 ## 安装
 首先需要安装三个东西, CMake, GLFW, GLEW。下面是下载路径
 
