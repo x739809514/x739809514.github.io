@@ -14,7 +14,7 @@
     * **C#**
         * [C# Basic](/Code/CS/)
 * OpenGL
-    * [**Mac环境配置**]()
+    * [**Mac环境配置**](/Notes/OpenGL/)
 
 * Unity
     * [**Unity basic knowledge**]()
