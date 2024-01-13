@@ -139,4 +139,4 @@ while (glfwWindowShouldClose(window) == false)
 glfwDestroyWindow(window);
 glfwTerminate();
 ```
-
+以上就是对于该段代码的解释。
