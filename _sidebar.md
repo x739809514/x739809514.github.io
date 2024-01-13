@@ -16,6 +16,7 @@
 * OpenGL
     * [**Mac环境配置**](/Notes/OpenGL/SetEnvironment/)
     * [**从文档开始**](/Notes/OpenGL/01/)
+    * [**绘制三角形**](/Notes/OpenGL/02/)
 
 * Unity
     * [**Unity basic knowledge**]()
