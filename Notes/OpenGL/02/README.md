@@ -70,6 +70,92 @@ glGenVertexArrays(1,&VAO);
 glBindVertexArray(VAO);
 ```
 
+### 如何处理这些Shader
+
+上文写shader的方法，直接使用字符串形式会让编写过于复杂，所以我们可以在一个专门的文件中写shader脚本，最后用字符流的方式读写。在这里可以调用c++ stl库中的 `fstream` 和 `sstream` , 如下列代码：
+```c++
+static ShaderProgram ParseShader(const std::string filepath)
+{
+  std::ifstream inFile(filepath);
+  std::string line;
+  ShaderType type = ShaderType::None;
+  std::stringstream ss[2];
+
+  while (getline(inFile,line))
+  {
+      if(line.find("#Shader")!=std::string::npos)
+      {
+          if(line.find("vertex")!=std::string::npos)
+          {
+              // get vertex str
+              type = ShaderType::Vertex;
+          }else if(line.find("fragment")!=std::string::npos)
+          {
+              // get fragment str
+              type = ShaderType::Fragment;
+          }
+      }else{
+          ss[(int)type] << line << '\n';
+      }
+  }
+  inFile.close();
+  return {ss[0].str(),ss[1].str()};
+}
+```
+
+### 索引数组
+
+当我们想要绘制一个矩形时，我们可以看做他是有两个三角形构成，于是我们可以对我们的顶点数组做以下调整：
+```c++
+float positions[] = {
+        -0.5f, -0.5f, //0
+        0.5f, -0.5f,  //1
+        0.5f, 0.5f,   //2
+        0.5f, 0.5f,   //3
+        -0.5f, 0.5f,  //4
+        -0.5f, -0.5f, //5
+        };
+
+//同时修改draw call
+glDrawArrays(GL_TRIANGLES,0,6);
+```
+
+但是观察上面的顶点数组，我们可以发现有许多顶点是重复的，当三角形的数量非常多时，会产生大量的计算浪费，为了解决这个问题，我们可以创建另一个数组——索引数组。
+
+索引数组保存了三角形要用到的顶点在顶点数组中的索引，假如上述数组中，我给每个顶点进行标号，那么我的索引数组就可以是：
+```c++
+unsigned int indices[]={
+        0,1,2,
+        2,3,0
+    };
+```
+
+同时修改顶点数组
+
+```c++
+float positions[] = {
+        -0.5f, -0.5f,
+        0.5f, -0.5f,
+        0.5f, 0.5f,
+        -0.5f, 0.5f,
+        };
+```
+
+接下来跟前面一样，我们需要将索引数组保存到EBO当中
+```c++
+unsigned int ido;
+glGenBuffers(1, &ido);
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ido);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+```
+
+这里需要注意，我们这次是用的是`GL_ELEMENT_ARRAY_BUFFER` 。同时在渲染循环中，我们需要将drawcall 改成：
+```c++
+glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,nullptr);
+```
+
+这里尤其注意，必须使用unsigned int, 因为unsigned int是非负的，不会有负数的索引，并且由于unsigned int是32位，能够提供足够大的存储范围，但又不会像64位一样占过大的内存。
+
 ### 相关资料
 
 OpenGL API：https://docs.gl/
