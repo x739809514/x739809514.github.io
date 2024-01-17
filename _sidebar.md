@@ -15,8 +15,9 @@
         * [C# Basic](/Code/CS/)
 * OpenGL
     * [**Mac环境配置**](/Notes/OpenGL/SetEnvironment/)
-    * [**从文档开始**](/Notes/OpenGL/01/)
-    * [**绘制三角形**](/Notes/OpenGL/02/)
+    * [**OpenGL学习（一）**](/Notes/OpenGL/01/)
+    * [**OpenGL学习（二）**](/Notes/OpenGL/02/)
+    * [**OpenGL学习（三）**](/Notes/OpenGL/03/)
 
 * Unity
     * [**Unity basic knowledge**]()
