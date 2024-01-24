@@ -86,6 +86,30 @@ int main() {
 }
 ```
 
+## Dynamic linker
+
+动态链接器（Dynamic Linker）是一个在程序运行时（runtime）负责加载和链接共享库（shared libraries）的系统软件组件。这是现代操作系统中一个复杂但至关重要的部分。以下是动态链接器的工作原理的简要概述：
+
+1. **加载程序时的动态链接**：
+   - 当一个可执行文件（比如一个程序或者应用）启动时，操作系统首先将其加载到内存中。
+   - 动态链接器检查可执行文件的头部信息，确定它依赖哪些共享库。
+   - 动态链接器然后加载这些共享库（如果它们还没有在内存中的话）。这些共享库通常是`.so`（Linux）或`.dll`（Windows）文件。
+2. **解析符号和地址**：
+   - 每个共享库包含一系列的符号（symbols），比如函数和变量的名称。
+   - 动态链接器解析这些符号的地址。这意味着它确定每个符号在内存中的具体位置。
+   - 当程序调用一个在共享库中的函数时，动态链接器确保这个调用被重定向（redirect）到正确的内存地址。
+3. **懒惰链接（Lazy Linking）**：
+   - 在某些系统中，动态链接器采用“懒惰链接”策略。这意味着它只在符号第一次被访问时才解析其地址。
+   - 这可以提高程序启动速度，因为并不是所有的符号都需要立即解析。
+4. **符号重定位（Relocation）**：
+   - 由于共享库可以被加载到内存的任意位置，动态链接器需要调整（relocate）库中符号的地址，使其反映它们在内存中的实际位置。
+5. **全局偏移表（GOT）和程序链接表（PLT）**：
+   - 在一些实现中，动态链接器使用全局偏移表（GOT）和程序链接表（PLT）来管理外部函数调用。
+   - GOT用于存储符号的实际地址，而PLT用于处理函数调用的初始阶段。
+6. **处理版本控制和兼容性**：
+   - 动态链接器还负责处理库版本控制，确保程序使用的是正确版本的共享库。
+   - 它还可能执行一些兼容性检查，以确保库与程序兼容。
+
 # visual stdio debug
 
 we can use debug window in visual stdio, and see what is in memory.
@@ -1328,6 +1352,8 @@ std::string就是在这基础上做了一层封装，实际上是一个东西
         In the example above, **`myUnion`** is a union that can hold an **`int`**, a **`float`**, or a **`char`**. However, it can only hold one of these types at a time. When we assign a value to **`myFloat`**, the content of **`myInt`** becomes undefined because they share the `same memory location`. The same happens when we assign a value to **`myChar`**.
         
         Unions are useful in situations where you want to use the same memory space for different types, and you are sure about which type is stored in the union at any point in time. This can lead to more memory-efficient programs.
+        
+        For example: if we want to store data struct in one memory location, such as tcp and udp, if we use union, we don't need shift bits, it can be quicker and safer.
         
         # condition and action breakpoint
         
