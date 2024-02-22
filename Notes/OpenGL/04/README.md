@@ -93,7 +93,7 @@ void VertexLayout::Push<unsigned int>(unsigned int count)
 
 #### Vertex Array & Vertex Buffer
 
-First, we deal with the vertexes, in our previous code, we do something like this:
+Then, we deal with the vertexes, in our previous code, we do something like this:
 ```c++
 glBindVertexArray(VAO);
 
@@ -199,5 +199,16 @@ void VertexBuffer::UnBind()
 }
 ```
 
+Finally, we can modify our `main.cpp`, firstly, we can use `VertexLayout` to add coordinates, then we can use  `VertexArray` and `VertexBuffer` to save data into GPU. Here is the code:
 
+```c++
+VertexBuffer vb(4 * 4 * sizeof(float), positions);
+
+VertexLayout vl;
+vl.Push<float>(2);
+vl.Push<float>(2);
+VertexArray va(VAO);
+va.Bind();
+va.AddBuffer(vb, vl);
+```
 
