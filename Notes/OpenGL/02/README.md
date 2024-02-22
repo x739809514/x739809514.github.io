@@ -141,7 +141,7 @@ float positions[] = {
         };
 ```
 
-接下来跟前面一样，我们需要将索引数组保存到EBO当中
+接下来跟前面一样，我们需要将索引数组保存到VBO当中
 ```c++
 unsigned int ido;
 glGenBuffers(1, &ido);
