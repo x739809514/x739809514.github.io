@@ -180,7 +180,7 @@ private:
 
 In OpenGL, using textures typically involves the following steps:
 
-1. **Load Texture Image**: First, you need to load the texture image from a file into memory. This is usually done using an external library (like stb_image.h or SOIL) because OpenGL does not provide image loading capabilities by itself.
+1. **Load Texture Image**: First, you need to load the texture image from a file into memory. This is usually done using an external library (like `stb_image.h` or SOIL) because OpenGL does not provide image loading capabilities by itself.
 2. **Generate Texture Object**: Use the `glGenTextures` function to generate a texture object.
 3. **Bind Texture Object**: Use the `glBindTexture` function to bind the texture object so that OpenGL knows the subsequent texture instructions are for this texture. You can bind different types of textures with this function, such as 2D textures (`GL_TEXTURE_2D`).
 4. **Set Texture Parameters**: Use the `glTexParameteri` or `glTexParameterf` function to set various texture parameters, such as texture wrapping mode (`GL_TEXTURE_WRAP_S`, `GL_TEXTURE_WRAP_T`), texture filtering mode (`GL_TEXTURE_MIN_FILTER`, `GL_TEXTURE_MAG_FILTER`), etc.
