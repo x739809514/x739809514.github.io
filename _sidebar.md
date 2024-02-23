@@ -21,6 +21,7 @@
     * [**OOP in OpenGL(1)**](/Notes/OpenGL/04/)
     * [**OOP in OpenGL(2)**](/Notes/OpenGL/05/)
     * [**Math in OpenGL**](/Notes/OpenGL/06/)
+    * [**Batch Rendering**](/Notes/OpenGL/07/)
 
 * Linux&Network
     * [Class01](/Notes/Linux%20and%20Network/Class01/)
