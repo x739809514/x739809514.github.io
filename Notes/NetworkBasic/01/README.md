@@ -4,7 +4,7 @@
 
 This is the picture of three handshake of TCP.
 
-![tcp handshake](D:\A工作区\MyWebsite\Notes\NetworkBasic\resource\01.png)
+![tcp handshake](../resource/01.png)
 
 The TCP three-way handshake is a process used by TCP (Transmission Control Protocol) to establish a connection between two devices over a network. It is a key part of TCP's reliable, connection-oriented communication model. The handshake involves three steps:
 
@@ -32,7 +32,7 @@ Here is the reason. For example, after the connection is completed, now, if clie
 
 ### TCP message pocket
 
-![pocket](D:\A工作区\MyWebsite\Notes\NetworkBasic\resource\02.png)
+![pocket](../resource/02.png)
 
 ### TCP head:
 
@@ -50,7 +50,7 @@ Here is the reason. For example, after the connection is completed, now, if clie
 12. **Padding**: This is used to ensure the header is a multiple of 32 bits in length.
 13. **Data**: This area contains the payload data being transmitted.
 
-![](D:\A工作区\MyWebsite\Notes\NetworkBasic\resource\03.png)
+![](../resource/03.png)
 
 ### How TCP ensure its reliable
 
