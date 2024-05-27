@@ -19,10 +19,19 @@
       repo: '',
       loadSidebar: true,
       subMaxLevel: 2,
-      coverpage: true
+      coverpage: true,
+      search: {
+                placeholder: {
+                    '/': 'Search...'
+                },
+                noData: 'Not Found！',
+                depth: 2
+            }
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="./docsify-static/plugins/search.js"></script>
+
 </body>
 </html>
