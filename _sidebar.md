@@ -9,7 +9,8 @@
     * [IlRuntime_Proj](/Proj/ILR_FrameWork/)
 
 * Code
-    * [C++](/Code/C++/)
+    * [C++ Notes](/Code/C++/README.md)
+    * [C++ Coding Style](/Code/C++/CodingStyle.md)
     * [lua](/Code/lua/)
     * **C#**
         * [C# Basic](/Code/CS/)
