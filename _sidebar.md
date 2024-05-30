@@ -10,7 +10,9 @@
     * [SocketLib](/Proj/SocketLib/)
 
 * Code
-    * [C++](/Code/C++/)
+    * [C++ Notes](/Code/C++/README.md)
+    * [C++ Coding Style](/Code/C++/CodingStyle.md)
+    * [C++ Prime Note](/Code/C++/C++%20Prime%20Note.md)
     * [lua](/Code/lua/)
     * **C#**
         * [C# Basic](/Code/CS/)
@@ -26,8 +28,5 @@
 * Basic Network
     * [TCP/IP](/Notes/NetworkBasic/01/)
     * [ASync in Network](/Notes/NetworkBasic/02/)
-
-* Linux&Network
-    * [Class01](/Notes/Linux%20and%20Network/Class01/)
 
 
