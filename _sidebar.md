@@ -11,6 +11,7 @@
 * Code
     * [C++ Notes](/Code/C++/README.md)
     * [C++ Coding Style](/Code/C++/CodingStyle.md)
+    * [C++ Prime Note](/Code/C++/C++%20Prime%20Note.md)
     * [lua](/Code/lua/)
     * **C#**
         * [C# Basic](/Code/CS/)
