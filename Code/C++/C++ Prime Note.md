@@ -161,3 +161,141 @@ strct Sale_data{
 }
 #endif
 ```
+
+## String, Vector & Array
+
+### Using 
+
+- using namespace
+- don't use "using" in the head file, since other code uses this head file will use this "using" meantime.
+
+### String
+
+A string is a variable-length character sequence.
+
+Copy Initialization: using `=` copy an existing object to another
+Direct Initialization: using `()` assign value to object
+
+for (auto c : str) or for (auto &c : str)
+
+### Vector
+
+Vector is a template 
+
+| Method                    | Explain                                                      |
+| ------------------------- | ------------------------------------------------------------ |
+| vector<T> v1              | v1 is a empty vector, the potential element is T type, excute default initialization |
+| vector<T> v2 = v1         | v2 contains all elements in v1                               |
+| vector<T> v2(v1)          | same as vector<T> v2=v1                                      |
+| vector<T> v3(n, val)      | v3 contains duplicate elements, each one is val              |
+| vector<T> v4(n)           | v4 contains duplicate elements which are initialized         |
+| vector<T> v5{a, b, c...}  | v5 contains several initialized value                        |
+| vector<T> v5={a, b, c...} | same as vector<T> v5{a, b, c...}                             |
+
+C++11, vector<string> initialize: vector<string> v{"a", "an", "the"};
+
+#### Add Elements
+
+push_back()
+push_back() may cause memory allocation(when there are no enough space), and call copy constructor. So it's better to use `Reserve()` allocating some memory space previously.
+
+Notice thread security.
+
+### Iterator
+
+iterator can traverse a container.
+
+- `auto b = v.begin();` returns an iterator pointing to the first element.
+- `auto e = v.end();` returns an iterator pointing to the element past the last one (sentinel, past-the-end, one past the end) (off the end).
+- If the container is empty, `begin()` and `end()` return the same iterator, which is the past-the-end iterator. 
+- Use the dereference operator `*` to access the element pointed to by the iterator. Make a habit of using iterators and `!=` (for generic programming).
+- `const_iterator`: can only read elements in the container but cannot modify them. 
+- Arrow operator: dereference + member access, `it->mem` is equivalent to `(*it).mem`. 
+
+**whenever a loop uses iterators, do not add elements to the container that the iterator belongs to.**
+
+### C style string
+
+Using stl string is better than this in most of time
+
+### Pointer VS Reference
+
+1. Reference always points to one of object
+2. if the reference is not initialized, it would be wrong
+
+### Pointer to pointer
+
+a pointer to a pointer is a variable that stores the address of another pointer.
+
+#### Declaration and Usage
+
+```c++
+int x = 5;
+int *p = &x;    // Pointer to int
+int **pp = &p;  // Pointer to pointer to int
+```
+
+#### Use Case
+
+```c++
+#include <iostream>
+using namespace std;
+
+void allocateMemory(int **p) {
+    *p = new int;  // Allocates memory for an integer
+    **p = 100;     // Sets the value to 100
+}
+
+int main() {
+    int *p = nullptr;
+    allocateMemory(&p);
+
+    if (p != nullptr) {
+        cout << "Value of allocated memory: " << *p << endl; // Output: 100
+        delete p; // Free the allocated memory
+    }
+
+    return 0;
+}
+```
+
+Multidimensional arrays
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int rows = 3;
+    int cols = 4;
+
+    // Allocate memory for a 2D array
+    int **matrix = new int*[rows];
+    for (int i = 0; i < rows; ++i) {
+        matrix[i] = new int[cols];
+    }
+
+    // Initialize and print the matrix
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            matrix[i][j] = i * cols + j;
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // Deallocate memory
+    for (int i = 0; i < rows; ++i) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+
+    return 0;
+}
+```
+
+### Dynamic Array
+
+- using `new` and `delete` , allocate in the heap
+- int *pia = new int[10];
+- delete [ ] pia;
