@@ -24,6 +24,18 @@
    2. Mordern processor are optimized for `double`, so they are not  usually slower than `float`
    3. In most case, using `double`, but in game development, graphic processing, using `float` since precision requirement is lower in these cases.
 
+```
+(a) 'a', L'a', "a", L"a"
+(b) 10, 10u, 10L, 10uL, 012, 0xC
+(c) 3.14, 3.14f, 3.14L
+(d) 10, 10u, 10., 10e-2
+```
+
+a. Character literal value, wide character literal value, string literal value, wide string literal value
+b. decimal integer, unsigned decimal integer, long decimal integer, unsigned decimal integer, octal integer, hexadecimal integer
+c. Double, float, long double
+d. Decimal integer, unsigned decimal integer, double, double
+
 ### Variable Define & declaration
 
 1. Initialization is not assignment
@@ -75,6 +87,18 @@ pointer `void*` can store any objects' address, that is non-type pointer, it onl
 
 ### Const
 
+### Top-level & Low-level
+
+Top-level const means the variable is const itself, low-level const means the pointer points a const variable
+
+```c++
+const int v2 = 0; int v1 = v2;
+int *p1 = &v1, &r1 = v1;
+const int *p2 = &v2, *const p3 = &i, &r2 = v2;
+```
+
+V2 is top-level const, p2 is low-level, p3 is both top-level and low-level(since p3 is a const pointer and it points to a const variable), r2 is low-level.
+
 #### initialization
 
 - const object must need to be initialized, and can't be changed
@@ -84,6 +108,7 @@ pointer `void*` can store any objects' address, that is non-type pointer, it onl
   `const double pi = 3.14; const double *cptr = &pi`
 - const pointer: the address of the object can't be changed, but the value of the object can be changed (low-level const)
   `int i = 0; int *const ptr = &i`
+- for top-level const, copy won't influence that, but for low-level const, we need add const by ourselves.
 - constexpr: the object can be know at compile step
 
 ### Type Processing
@@ -136,4 +161,3 @@ strct Sale_data{
 }
 #endif
 ```
-
