@@ -299,3 +299,106 @@ int main() {
 - using `new` and `delete` , allocate in the heap
 - int *pia = new int[10];
 - delete [ ] pia;
+
+## Expression
+
+### Lvalue & Rvalue
+
+The left value refers to an expression that can appear on the left of the assignment operator, indicating a memory position that can obtain the value of the location or store the new value in the  position.
+	1. Addressable
+	1. Durability: It exist with its scope and will not disappear because of the end of the expression
+
+The right value can't appear on the left of the assignment operator, it represents a temporary value or literal quantity.
+	1. non-addressable
+	1. temporary
+
+### Arithmetic operator
+
+**overflow**: when calculation result exceeds the range of the type, it can overflow
+**remainder operation**: m%n, the symbol of the result same as the m
+
+### Short-circuit evaluation
+
+it conditionally decides if need to calculate right-hand operand, accordfing to the value of the left-hand operand.
+like `&&` , it calculate right-hand operand only when left operand is true.
+
+using reference can avoid copy for element:
+```c++
+vector<string> text;
+for(const auto &s: text){
+  cout<<s;
+}
+```
+
+### Incremental decrement operator
+
+++i and i++，priority use ++i, i++ will store original value
+
+*iter++ euqals to *(iter++), incremental operator has higher priority.
+
+### Member access operaor
+
+ptr->mem equals to (*ptr).mem, `.` has higher operator than `*`, so remember adding `( )` 
+
+### Bitwise  operator
+
+The bit operator acts on an integer type.
+`<<`: move to left
+`>>`: move to right
+`~`: inverse
+`&`: and
+`|`: or
+`^`: XOR
+
+### Implicit type conversion
+
+This is known as automatic type conversion or type promotion, refers to  the process where the compiler automatically converts a value from one data type to another without explicit instruction.
+
+1. **Avoid precision loss**
+   Implicit type conversion is designed to avoid precision loss whenever possible. This means that values are usually converted to a more precise or higher precision type.
+
+   ```c++
+   int i = 42;
+   double d = i; // int is converted to double, avoiding precision loss
+   ```
+
+2. **Promotion of integers smaller than int**
+   During calculations, integer types smaller than `int` (such as `char` and `short`) are promoted to `int` or `unsigned int` to prevent overflow or precision loss.
+
+   ```c++
+   char c = 'A';
+   int i = c + 1; // char is promoted to int for arithmetic operations
+   ```
+
+3. **Non-boolean types in conditional statements**
+   In conditional statements, non-Boolean types are implicitly converted to Boolean types. Non-zero values are converted to `true`, while zero values are converted to `false`.
+
+   ```c++
+   int x = 10;
+   if (x) {
+       // x is implicitly converted to a Boolean true
+   }
+   ```
+
+4. **Type conversion in Arithmetic or Relational Operations**
+   In arithmetic or relational operations, if the operands have different types, they are converted to the same type for the calculation. Typically, they are converted to the type with the highest precision in the expression.
+
+   ```c++
+   int a = 5;
+   double b = 6.7;
+   double result = a + b; // int is converted to double, then the addition is performed
+   ```
+
+5. Type conversion in Function calls
+   During function calls, the actual parameter's type is converted to the type of the function parameter.
+
+   ```c++
+   void func(double d) {
+       // ...
+   }
+   
+   int i = 42;
+   func(i); // int is converted to double
+   ```
+
+   
