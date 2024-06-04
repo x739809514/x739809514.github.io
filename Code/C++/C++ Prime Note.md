@@ -401,4 +401,43 @@ This is known as automatic type conversion or type promotion, refers to  the pro
    func(i); // int is converted to double
    ```
 
-   
+## Statements
+
+### Try-Catch
+
+`try` statement start with keyword `try`, which follow by several `catch`, is there are any exception in try scope, the control flow will jump to first matching `catch`
+
+```c++
+try {
+    // 可能抛出异常的代码
+    func();
+} catch (const std::runtime_error& e) {
+    // 异常处理代码
+    std::cerr << "Caught an error: " << e.what() << std::endl;
+} catch (const std::exception& e) {
+    // 捕获其他std::exception的子类
+    std::cerr << "Caught an exception: " << e.what() << std::endl;
+}
+```
+
+### Abnormal  Class
+
+```c++
+class MyException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "My custom exception";
+    }
+};
+
+void func() {
+    throw MyException();
+}
+
+try {
+    func();
+} catch (const MyException& e) {
+    std::cerr << "Caught MyException: " << e.what() << std::endl;
+}
+```
+
