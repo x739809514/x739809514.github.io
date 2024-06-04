@@ -441,3 +441,194 @@ try {
 }
 ```
 
+## Function
+
+**return type: **void means the func return nothing, the return type of the function can't be an array or function, but can be a pointer pointing to an array or a function.
+
+```c++
+int* getArray() {
+    static int arr[10];
+    // Initialize array
+    for (int i = 0; i < 10; ++i) {
+        arr[i] = i;
+    }
+    return arr; // return the pointer to array
+}
+```
+
+```c++
+int add(int a, int b) {
+    return a + b;
+}
+
+int (*getFunction())(int, int) {
+    return add; //  return the pointer to func
+}
+```
+
+### local static variable
+
+The local static variable is decalared within a function, it is decalared only once, and the lifecycle runs through the program's runtime, it still exists after the function exits. **But the scope is wtill limited with the function, other function can't access local static variable directly.**
+
+### Const formal and actual parameters
+
+- The top-level const of formal parameter can be ignored, `void func(const int i);` can both pass `const int` and `int` into function
+
+- It is possible to initialize an low-level const object with a non constant, but the opposite is not possible
+  ```c++
+  int x = 10;
+  const int* p = &x; // it's ok, low-level const
+  
+  const int y = 20;
+  int* q = &y; // error, don't allow constant to initialize non-const pointer
+  ```
+
+- In the function, the local copy of the real parameter cannot be changed
+  ```c++
+  void modifyValue(int i) {
+      i = 20; 
+  }
+  
+  int main() {
+      int a = 10;
+      modifyValue(a);
+      std::cout << a << std::endl;
+      return 0;
+  }
+  ```
+
+- Try to use constant reference
+  Using constant references (const&) can avoid copying and prevent modifying incoming objects within the function, improving code efficiency and security.
+
+  ```c++
+  void printValue(const int& i) {
+      std::cout << i << std::endl;
+  }
+  
+  int main() {
+      int a = 10;
+      printValue(a); // 传入int类型
+      const int b = 20;
+      printValue(b); // 传入const int类型
+      return 0;
+  }
+  ```
+
+  #### main function
+
+  `int main(int argc, char *argv[]){...}` first parameter depresent the number of the para, the second parameter depresent c-style string array.
+
+### Initializer_list
+
+The initializer_list is a type of class template in c++ standard library, it indicates a type of constant array. It always used to enable function can accept a variable number of parameters of the same type. 
+for example:
+
+```c++
+#include <initializer_list>
+#include <iostream>
+
+void printList(std::initializer_list<int> list) {
+    for (auto elem : list) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    printList({1, 2, 3, 4, 5}); 
+    return 0;
+}
+```
+
+Different with `std::list`
+
+`std::list`:
+
+1. it is a two -way linked list, efficient for insert and delete element
+2. use for frequently delete, insert and do not care about the scene of random access performance
+3. memory alloc in heap, dynamic allocation of memory
+
+`std::initializer_list`:
+
+1. Used for initialize a container or pass a variable number of parameters of the same type in a function
+2. Used for initialized list and function parameter
+3. readonly, used for constant array, lifecycle is short. 
+4. it is allocated in the stack
+
+### Return Type & Return Statement
+
+- The return value of the return statement must be of the same type as the function's return type, or be able to be implicitly converted to the function's return type.
+- Return of value: The value returned is used to initialize a temporary quantity at the point of call that is the result of the function call.
+- **Do not return references or pointers to local objects.**
+- References return left values: The return type of a function determines whether the function call is left-valued. Calling a function that returns a reference gets the left value; other return types get the right value.
+- List initialized return values: a function can return a list of values surrounded by curly braces. (C++11)
+- Return value of main function main: if there is no return at the end, the compiler will implicitly insert a return statement that returns 0. A return of 0 means successful execution.
+
+### Overload
+
+**overload:** If there are several functions which names are same but the list of the formula parameter are different, these functions are overload
+
+main function can't be overload
+
+overload and const formula parameter:
+
+1. one formula parameter has top-level const can't differ with the function without top-level const:
+   `Record lookup(Phone* const)` and `Record lookup(Phone*)` are same
+2. in contrast, whether function has low-level const can be  distinguished.
+   `Record lookup(Account*)`and `Record lookup(const Account*)` are different.
+
+**overload and scope**: different scope can't overload.
+
+### Inline Function
+
+Inline function can expand function body at the call point, it can improve efficient. The idea of inline function is replace function calling with function code, then reduce calling cost.
+```c++
+inline int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int result = add(3, 4); // int result = 3 + 4;
+    return 0;
+}
+```
+
+**Applicable Scenarios:** Small, frequently called functions: suitable for defining small, simple, frequently called functions, such as accessor methods, simple calculation functions, etc.
+Avoid recursion and complex logic: inline functions are not suitable for functions that contain recursive calls or complex logic.
+
+### Assert Preprocessing macros
+
+`assert(expr)`, if `expr` is false, the program will be paused, and print error info.
+
+ By defining or undefined NDEBUG macros, assertion checking can be turned on or off
+
+```c++
+#include <iostream>
+#include <cassert>
+
+using namespace std;
+
+void testFunction(int value) {
+    assert(value > 0); // assert check
+
+    #ifndef NDEBUG
+        cerr << __func__ << " called with value: " << value << endl;
+    #endif
+}
+
+int main() {
+    testFunction(5);  //debug info: func name and para value
+    testFunction(-1); //assert called, program paused
+    return 0;
+}
+```
+
+### Function Pointer
+
+Function pointer: is a pointer to a function.
+
+- bool (*pf)(const string &, const string &); Note: The parentheses at both ends must not be missing.
+- Function pointer formal parameter:
+- Using a function definition or a function pointer definition in a formal parameter has the same effect.
+- Use type aliases or decltype.
+- Returns a pointer to a function: 1. type alias; 2. trailing return type.
