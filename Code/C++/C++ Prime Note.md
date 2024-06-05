@@ -627,8 +627,142 @@ int main() {
 
 Function pointer: is a pointer to a function.
 
-- bool (*pf)(const string &, const string &); Note: The parentheses at both ends must not be missing.
-- Function pointer formal parameter:
-- Using a function definition or a function pointer definition in a formal parameter has the same effect.
+- `bool (*pf)(const string &, const string &); ` Note: The parentheses at both ends must not be missing.
+
+  ```c++
+  #include <iostream>
+  #include <string>
+  
+  bool compare(const std::string &a, const std::string &b) {
+      return a == b;
+  }
+  
+  int main() {
+      bool (*pf)(const std::string &, const std::string &) = compare;
+      std::string str1 = "hello";
+      std::string str2 = "world";
+      
+      if (pf(str1, str2)) {
+          std::cout << "Strings are equal." << std::endl;
+      } else {
+          std::cout << "Strings are not equal." << std::endl;
+      }
+      return 0;
+  }
+  ```
+
+  
+
+- Function pointer as formal parameter, the following two are same
+  **Using Function Pointer as Parameter:**
+
+  ```c++
+  void useFunctionPointer(bool (*pf)(const std::string &, const std::string &)) {
+      std::string str1 = "hello";
+      std::string str2 = "hello";
+      if (pf(str1, str2)) {
+          std::cout << "Strings are equal." << std::endl;
+      } else {
+          std::cout << "Strings are not equal." << std::endl;
+      }
+  }
+  ```
+
+  **Using Function Definition as Parameter:**
+
+  ```c++
+  void useFunctionPointer(bool compare(const std::string &, const std::string &)) {
+      std::string str1 = "hello";
+      std::string str2 = "hello";
+      if (compare(str1, str2)) {
+          std::cout << "Strings are equal." << std::endl;
+      } else {
+          std::cout << "Strings are not equal." << std::endl;
+      }
+  }
+  ```
+
 - Use type aliases or decltype.
+  **type aliases:**
+
+  ```c++
+  typedef bool (*CompareFunc)(const std::string &, const std::string &);
+  
+  void useFunctionPointer(CompareFunc pf) {
+      std::string str1 = "hello";
+      std::string str2 = "hello";
+      if (pf(str1, str2)) {
+          std::cout << "Strings are equal." << std::endl;
+      } else {
+          std::cout << "Strings are not equal." << std::endl;
+      }
+  }
+  ```
+
+  **decltype:**
+
+  ```c++
+  void useFunctionPointer(decltype(compare) *pf) {
+      std::string str1 = "hello";
+      std::string str2 = "hello";
+      if (pf(str1, str2)) {
+          std::cout << "Strings are equal." << std::endl;
+      } else {
+          std::cout << "Strings are not equal." << std::endl;
+      }
+  }
+  ```
+
 - Returns a pointer to a function: 1. type alias; 2. trailing return type.
+  using type alias:
+
+  ```c++
+  typedef bool (*CompareFunc)(const std::string &, const std::string &);
+  
+  CompareFunc getCompareFunc() {
+      return compare;
+  }
+  ```
+
+  using trailing return type
+  ```c++
+  auto getCompareFunc() -> bool (*)(const std::string &, const std::string &) {
+      return compare;
+  }
+  ```
+
+  #### Complete Example
+
+  ```c++
+  #include <iostream>
+  #include <string>
+  
+  bool compare(const std::string &a, const std::string &b) {
+      return a == b;
+  }
+  
+  typedef bool (*CompareFunc)(const std::string &, const std::string &);
+  
+  void useFunctionPointer(CompareFunc pf) {
+      std::string str1 = "hello";
+      std::string str2 = "hello";
+      if (pf(str1, str2)) {
+          std::cout << "Strings are equal." << std::endl;
+      } else {
+          std::cout << "Strings are not equal." << std::endl;
+      }
+  }
+  
+  auto getCompareFunc() -> bool (*)(const std::string &, const std::string &) {
+      return compare;
+  }
+  
+  int main() {
+      CompareFunc pf = getCompareFunc();
+      useFunctionPointer(pf);
+      return 0;
+  }
+  ```
+
+  
+
