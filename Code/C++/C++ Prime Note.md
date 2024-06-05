@@ -764,5 +764,130 @@ Function pointer: is a pointer to a function.
   }
   ```
 
-  
+## Class
+
+### *this
+
+- each member has an extra, implicit parameter this
+- this pointer points to current object, it is a const pointer
+- The const following the formal parameter table changes the type of the implicit this formal parameter, e.g., bool same_isbn(const Sales_item &rhs) const, which is called a “constant member function” (the current object pointed to by this is a constant).
+- return `*this;` can allow member functions to be called continuously.
+- Ordinary non -Const member function: This is a const pointer to the type type (it can change the value that this is pointed to and cannot change the address saved by this).
+- Const member function: This refers to the Const pointer to the Const class (neither can change the value of this direction or the address saved by this.)
+
+### delegating constructor
+
+A delegating constructor calls another constructor in the same class to perform part or all of its initialization. This is particularly useful for avoiding code duplication when multiple constructors share common initialization steps.
+```c++
+#include <iostream>
+
+class MyClass {
+public:
+    MyClass() : MyClass(0) { // Delegating constructor
+        std::cout << "Default constructor\n";
+    }
+
+    MyClass(int value) : value_(value) {
+        std::cout << "Parameterized constructor with value: " << value_ << "\n";
+    }
+
+private:
+    int value_;
+};
+
+int main() {
+    MyClass obj1;       // Calls default constructor, which delegates to the parameterized constructor
+    MyClass obj2(10);   // Calls parameterized constructor directly
+    return 0;
+}
+
+```
+
+```c++
+output:
+Parameterized constructor with value: 0
+Default constructor
+Parameterized constructor with value: 10
+```
+
+### Converting Constructor
+
+A converting constructor is a constructor that can be called with a single argument, allowing implicit conversion from the argument type to the class type.
+
+**Single step conversion:** The compiler will automatically perform only a single-step type conversion. This means it won't chain multiple conversions to achieve the desired type.
+
+```c++
+class MyClass {
+public:
+    MyClass(double value) {
+        // Initialization
+    }
+};
+
+int main() {
+    double d = 3.14;
+    MyClass obj = d; // Implicit conversion from double to MyClass
+    return 0;
+}
+```
+
+Using `explicit` can supress implicit conversion 
+```c++
+class MyClass {
+public:
+    explicit MyClass(int value) : value_(value) {
+        // Initialization
+    }
+
+private:
+    int value_;
+};
+
+int main() {
+    MyClass obj1(42); // Direct initialization is allowed
+    // MyClass obj2 = 42; // Error: Implicit conversion is not allowed
+    return 0;
+}
+```
+
+## Aggregate Class
+
+An aggregate class in C++ is a class or struct that meets the following criteria:
+
+1. All member are public
+2. Non User-Defined Constructors
+3. No In-Class Initializers
+4. No Base classes or virtual functions
+
+that is a data structure, like:
+```c++
+struct Point {
+    int x;
+    int y;
+};
+```
+
+```c++
+int main() {
+    Point p1 = {10, 20};  // Aggregate initialization
+    std::cout << "Point: (" << p1.x << ", " << p1.y << ")\n";
+    return 0;
+}
+```
+
+### Static
+
+- Non-static data members exist in every object of the class type.
+- A static data member exists independently of any object of that class.
+- Each static data member is an object associated with the class and is not associated with an object of that class.
+- Declaration:
+  - The declaration is preceded by the keyword static.
+- Usage:
+  - Use the scope operator ::Direct access to static members: r = Account::rate();
+  - Can also be accessed using the object: r = ac.rate();
+- Definitions:
+  - No need to add static when defining outside the class.
+- Initialization:
+  - **Usually not initialized inside the class, but initialized at definition time, e.g. `double Account::interestRate = initRate();` **
+  - **If it must be defined inside the class, the requirement is that it must be a constexpr of type literal value constant.**
 
