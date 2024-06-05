@@ -850,7 +850,7 @@ int main() {
 }
 ```
 
-## Aggregate Class
+### Aggregate Class
 
 An aggregate class in C++ is a class or struct that meets the following criteria:
 
