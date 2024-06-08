@@ -20,7 +20,7 @@
     * [OpenGL](/Notes/Computer%20Graphic/OpenGL/OpenGL.md)
 
 * **Network**
-    * [TCP/IP](/Notes/NetworkBasic/01/)
+    * [TCP,UDP,WebSocket](/Notes/NetworkBasic/01/)
     * [ASync in Network](/Notes/NetworkBasic/02/)
 
 
