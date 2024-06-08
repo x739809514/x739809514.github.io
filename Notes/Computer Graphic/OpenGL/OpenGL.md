@@ -535,7 +535,7 @@ OpenGL API：https://docs.gl/
 
 Rendering pipeline related knowledge：https://zhuanlan.zhihu.com/p/137780634
 
-## 在OpenGL中处理错误
+## Handling Errors in OpenGL
 
 When using OpenGL to create graphics it is very easy to end up with a black window because of some errors, so we need some way to debug errors as we normally do with code.OpenGL gives us some ways to do this, and the next two are described below.
 
