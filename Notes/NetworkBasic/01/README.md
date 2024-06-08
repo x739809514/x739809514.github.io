@@ -83,3 +83,208 @@ TCP also includes mechanisms for congestion control, which aim to prevent networ
 - **Duplication**: Sequence numbers and ACKs help to identify and discard duplicate segments.
 
 In summary, TCP's design incorporates a comprehensive set of strategies to ensure that data is transferred reliably over the unpredictable environment of IP networks. These mechanisms work together to handle packet loss, data corruption, order, duplication, flow control, and congestion, making TCP suitable for applications where reliable data transmission is critical.
+
+## UDP
+
+UDP protocol doesn't care about the stability of the network, and it doesn't guarantee the order of the packets. But it is faster than TCP since it doesn't build a connection. It just sends packets and doesn't resend packets.
+
+```
+     sender                     receiver
+       ｜													 ｜
+       ｜				data packet1			 ｜
+       ｜-------------------------->｜
+       ｜				data packet2			 ｜
+       ｜-------------------------->｜
+       ｜				data packet3			 ｜
+       ｜-------------------------->｜
+     sender                     receiver
+```
+
+#### UDP Client
+
+```c#
+using System;
+using System.Net;
+using System.Net.Sockets;
+using UnityEngine;
+
+public class UDPExample : MonoBehaviour
+{
+    private UdpClient udpClient;
+    private IPEndPoint remoteEndPoint;
+
+    private void Start()
+    {
+        StartUDPClient("127.0.0.1", 5555);
+    }
+
+    private void StartUDPClient(string ipAddress, int port)
+    {
+        udpClient = new UdpClient();
+        remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+
+        // start Async receive
+        udpClient.BeginReceive(ReceiveData, null);
+
+        // send message to server
+        SendData("Hello Server！");
+    }
+
+    private void ReceiveData(IAsyncResult result)
+    {
+        byte[] receivedBytes = udpClient.EndReceive(result, ref remoteEndPoint);
+        string receivedMessage = System.Text.Encoding.UTF8.GetString(receivedBytes);
+
+        Debug.Log("Receive data from server： " + receivedMessage);
+
+        udpClient.BeginReceive(ReceiveData, null);
+    }
+
+    private void SendData(string message)
+    {
+        byte[] sendBytes = System.Text.Encoding.UTF8.GetBytes(message);
+
+        udpClient.Send(sendBytes, sendBytes.Length, remoteEndPoint);
+
+        Debug.Log("Sended to Server： " + message);
+    }
+```
+
+#### UDP Server
+
+```c#
+using System;
+using System.Net;
+using System.Net.Sockets;
+using UnityEngine;
+
+public class UDPServer : MonoBehaviour
+{
+    private UdpClient udpServer;
+    private IPEndPoint remoteEndPoint;
+
+    private void Start()
+    {
+        StartUDPServer(5555);
+    }
+
+    private void StartUDPServer(int port)
+    {
+        udpServer = new UdpClient(port);
+        remoteEndPoint = new IPEndPoint(IPAddress.Any, port);
+
+        Debug.Log("Server already begin...");
+
+        udpServer.BeginReceive(ReceiveData, null);
+    }
+
+    private void ReceiveData(IAsyncResult result)
+    {
+        byte[] receivedBytes = udpServer.EndReceive(result, ref remoteEndPoint);
+        string receivedMessage = System.Text.Encoding.UTF8.GetString(receivedBytes);
+
+        Debug.Log("Receive form client： " + receivedMessage);
+
+        // processing data
+
+        udpServer.BeginReceive(ReceiveData, null);
+    }
+
+    private void SendData(string message, IPEndPoint endPoint)
+    {
+        byte[] sendBytes = System.Text.Encoding.UTF8.GetBytes(message);
+
+        udpServer.Send(sendBytes, sendBytes.Length, endPoint);
+
+        Debug.Log("Send to Client： " + message);
+    }
+}
+```
+
+
+
+## Websocket
+
+WebSocket is a protocol based on the TCP application layer, TCP uses data stream in data transmission, but different from TCP, WebSocket uses **message** in transmission. In addition, different common HTTP, WebSocket is a two-way protocol, it not only can response the message from clients but also can send data to clients. And WebSocket has some additional functions, maybe cost in performance.
+
+Here's how it works, step by step:
+
+- The client sends a special HTTP request called an "upgrade request". This request informs the server that the client wants to switch to WebSocket.
+
+
+- If the server supports WebSocket and agrees to the switch, it responds with a special HTTP response that confirms the upgrade to WebSocket.
+
+
+- Exchanging these messages establishes a persistent, two-way connection between the client and the server. Both parties can send messages at any time, not just in response to a request from the other party.
+
+
+- Now the client and server can send and receive messages at any time. Each WebSocket message is contained in "frames" that indicate when the message begins and ends. This allows browsers and servers to correctly interpret messages, even if they arrive in mixed order or are split into multiple parts due to network problems.
+
+```
+Client ──────> Router/Switch ──────> Firewall ──────> Server
+   ↑                                                       ↓
+   └──────────────────────────────── Bidirectional Communication ────────────┘
+```
+
+#### Code of Websocket Client
+
+```c#
+using UnityEngine;
+using WebSocketSharp;
+
+public class WebSocketClient : MonoBehaviour
+{
+    private WebSocket ws;
+
+    void Start()
+    {
+        ws = new WebSocket("ws://your-websocket-server-url/Auth");
+
+        ws.OnOpen += OnOpenHandler;
+        ws.OnMessage += OnMessageHandler;
+
+        ws.ConnectAsync();
+    }
+
+    private void OnOpenHandler(object sender, System.EventArgs e)
+    {
+                var data = "Player1";
+                ws.Send(data)
+    }
+
+    private void OnMessageHandler(object sender, MessageEventArgs e)
+    {
+        Debug.Log("WebSocket Server says： " + e.Data);
+    }
+}
+```
+
+#### Code of WebSocket Server
+
+```c#
+using UnityEngine;
+using WebSocketSharp;
+using WebSocketSharp.Server;
+
+public class WebSocketServer : MonoBehaviour
+{
+    void Start()
+  {
+    var socket = new WebSocketServer("ws://your-websocket-server-url");
+    socket.AddWebSocketService<AuthBehaviour>("/Auth");
+    socket.Start();
+  }
+}
+
+// AuthBehaviour is derive from WebSocketBehavior, it handle the message from client
+public class AuthBehaviour : WebSocketBehavior
+{
+  protected override void OnMessage (MessageEventArgs e)
+  {
+      var playerName = e.Data;
+      Debug.Log("WebSocket client connected： " + playerName);
+            Send("authentication completed： " + playerName);
+  }
+}
+```
+
