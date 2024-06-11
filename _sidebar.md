@@ -25,5 +25,5 @@
     * [ASync in Network](/Notes/NetworkBasic/02/)
 
 * **Performance Optimization**
-    * [Unity 性能优化](/Notes/Performance%20Optimization/README.md)
+    * [Unity 性能优化](/Notes/Performance%20Optimization/)
 
