@@ -94,3 +94,7 @@ private void SendAcknowledge(int sequenceNumber)
 }
 ```
 
+### Output
+
+![a795cb59a471e004784646af0b94a44](D:\A_WorkSpace\MyWebsite\Notes\NetworkBasic\resource\rudp.png)
+
