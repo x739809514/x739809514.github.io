@@ -94,7 +94,4 @@ private void SendAcknowledge(int sequenceNumber)
 }
 ```
 
-### Output
-
-![rudp](../resource/rudp.png)
 
