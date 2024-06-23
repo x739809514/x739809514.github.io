@@ -1,0 +1,153 @@
+{
+  "main": {
+    "id": "decc109a50d42bd3",
+    "type": "split",
+    "children": [
+      {
+        "id": "7fb47ba2240fdd19",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bf945dc2629e9869",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Code/C++/C++ Prime Note - std.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7fe201e1f9183dc2",
+    "type": "split",
+    "children": [
+      {
+        "id": "b0f60aa08e2a39fa",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3b60e2ba143574d6",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "3ed9a2e84acb620b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7ac226689822f53c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "65f6b219dfa8e132",
+    "type": "split",
+    "children": [
+      {
+        "id": "abf637cea9583979",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "aa606ada4d349e62",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Code/C++/C++ Prime Note - std.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3624995b73ecdeda",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Code/C++/C++ Prime Note - std.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "edd720a2e1dbf40b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "939a82f6d17e6868",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Code/C++/C++ Prime Note - std.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "bf945dc2629e9869",
+  "lastOpenFiles": [
+    "Code/C++/C++ Prime Note.md"
+  ]
+}
