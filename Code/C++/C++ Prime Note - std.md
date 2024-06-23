@@ -196,3 +196,163 @@ int main() {
 }
 ```
 
+## Sequential container
+
+| container type | describe                                                                                                                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| vector         | Variable size arrays. Supports fast random access. Inserting or deleting elements at **positions other than the tail** may be **slow**.     |
+| deque          | Double-ended queues. Supports fast random access. Insertion/deletion in **header** and **tail** positions is **fast**                       |
+| list           | Bidirectional chained tables. Insert/delete operations **anywhere** in the **list** are **fast**.                                           |
+| forward list   | Unidirectional chained tables. Insert/delete operations at **any position** in the **chain table** are **fast**.                            |
+| array          | Fixed size arrays. Supports fast random access. **Cannot add or remove elements.**                                                          |
+| string         | Containers similar to vectors, but specialised for holding characters. Random access to blocks. **Fast** insertion/deletion at the **end**. |
+==**Usually using a vector is the best choice, unless you have a good reason to choose another container.**==
+
+### Constructor
+
+| Operation               | Comment                                                                                                                 |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `C c`                   | default constructor                                                                                                     |
+| `C c1(c2)` or `C c1=c2` | copy constructor                                                                                                        |
+| `C c(b,e)`              | construct `c`, copy all elements from interator `b` and `e` to `c`                                                      |
+| `C c(a,b,c...)`         | list initialize `c`                                                                                                     |
+| `C c(n)`                | Only sequential containers are supported and do not include arrays, containing `n` elements which are value initialised |
+| `C c(n, t)`             | contains `n` elements with initial value `t`                                                                            |
+- Unlike other containers, the default constructed `array` is non-empty.
+- Only the constructor for sequential containers accepts the size parameter; associative containers are not supported.
+- Copying with an iterator: the container types are not required to be the same, and the element types within the containers can be different.
+### Assigning & Swap
+
+| operation                     | description                                                              |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| `c1.swap(c2)`                 | exchange `c1` and `c2`                                                   |
+| `swap(c1,c2)`                 | same with above                                                          |
+| `c.assign(l.begin(),l.end())` | Replace the elements in `c` with iterators `l` from its `begin` to `end` |
+| `c.assign({1,2,3,...})`       | Replace the elements in `c` with the elements in the initialisation list |
+| `c.assign(n, r)`              | Replace the elements in `c` with `n` elements whose values are `r`       |
+==`c.size()` return the number of c, but it doen't appropiate to `forward_list`==
+### insert element
+
+| Operation                   | Description                                                 |
+| --------------------------- | ----------------------------------------------------------- |
+| `c.insert(p,t)`             | create a element `t` before `p`                             |
+| `c.insert(p,n,t)`           | insert n `t` before `p`                                     |
+| `c.insert(p,b,e)`           | insert the scope from `l.begin()` to `l.end()` front of `p` |
+| `c.insert(p,{1,2,34,5...})` | insert `{}` front of `p`                                    |
+- `forward_list` has its own proprietary version of `insert` and `replace`. 
+- `forward_list` does not support `push_back` and `emplace_back`.
+### Change Container Size
+
+| Operation        | Description                                                                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `c.resize(n)`    | Resize c to n elements, if `n<c.size()`, the extra elements are discarded. If new elements must be added, initialise the new elements with values |
+| `c.resize(n, t)` | Resize c to n elements and any newly added elements are **initialised to the value `t`**                                                          |
+### Additional members of the reverse container
+
+| Operation                  | Description                                                                                        |
+| -------------------------- | -------------------------------------------------------------------------------------------------- |
+| `reverse_iterator`         | Iterators addressing elements in reverse order                                                     |
+| `const_reverse_iterator`   | Reverse-order iterators that cannot modify elements                                                |
+| `c.rbegin()`, `c.rend()`   | Returns an iterator pointing to the position before the tail element and the first element of `c`. |
+| `c.crbegin()`, `c.crend()` | Return`const_reverse_iterator`                                                                     |
+### Iterator
+
+- Iterator range: `begin` to `end`, i.e., the first element to one position after the last element.
+- Left closed interval: `[begin, end)`
+- Programming settings for left closure range implied:
+  - If `begin` and `end` are equal, the range is empty.
+  - If the two are not equal, the range contains at least one element and begin points to the first element in the range.
+  - It is possible to increment `begin` a number of times such that `begin == end`.
+### 容器操作可能使迭代器失效
+
+- 在向容器添加元素后：
+  - 如果容器是`vector`或`string`，且存储空间被重新分配，则指向容器的迭代器、指针、引用都会失效。
+  - 对于`deque`，插入到除首尾位置之外的任何位置都会导致指向容器的迭代器、指针、引用失效。如果在首尾位置添加元素，迭代器会失效，但指向存在元素的引用和指针不会失效。
+  - 对于`list`和`forward_list`，指向容器的迭代器、指针和引用依然有效。
+- 在从一个容器中删除元素后：
+  - 对于`list`和`forward_list`，指向容器其他位置的迭代器、引用和指针仍然有效。
+  - 对于`deque`，如果在首尾之外的任何位置删除元素，那么指向被删除元素外其他元素的迭代器、指针、引用都会失效；如果是删除`deque`的尾元素，则尾后迭代器会失效，但其他不受影响；如果删除的是`deque`的头元素，这些也不会受影响。
+  - 对于`vector`和`string`，指向被删元素之前的迭代器、引用、指针仍然有效。
+  - 注意：当我们删除元素时，尾后迭代器总是会失效。
+  - 注意：使用失效的迭代器、指针、引用是严重的运行时错误！
+  - 建议：将要求迭代器必须保持有效的程序片段最小化。
+  - 建议：不要保存`end`返回的迭代器。
+### How vector objects grow
+
+`vector` and `string` are stored continuously in memory, if the originally allocated memory location has been used up, **it is necessary to reallocate new space**, **move the existing elements from the location they were in**, **and then add new elements to the new space.**
+
+### 构造string的其他方法
+
+| 操作 | 解释 |
+|-----|-----|
+| `string s(cp, n)` | `s`是`cp`指向的数组中前`n`个字符的拷贝，此数组 |
+| `string s(s2, pos2)` | `s`是`string s2`从下标`pos2`开始的字符的拷贝。若`pos2 > s2.size()`，则构造函数的行为未定义。 |
+| `string s(s2, pos2, len2)` | `s`是`string s2`从下标`pos2`开始的`len2`个字符的拷贝。 |
+
+- `n`,`len2`,`pos2`都是无符号值。
+
+### substr操作
+
+| 操作 | 解释 |
+|-----|-----|
+| `s.substr(pos, n)` | 返回一个`string`，包含`s`中从`pos`开始的`n`个字符的拷贝。`pos`的默认值是0，`n`的默认值是`s.size() - pos`，即拷贝从`pos`开始的所有字符。 |
+
+### 改变string的其他方法
+
+| 操作 | 解释 |
+|-----|-----|
+| `s.insert(pos, args)` | 在`pos`之前插入`args`指定的字符。`pos`可以使是下标或者迭代器。接受下标的版本返回指向`s`的引用；接受迭代器的版本返回指向第一个插入字符的迭代器。 |
+| `s.erase(pos, len)` | 删除从`pos`开始的`len`个字符，如果`len`被省略，则删除后面所有字符，返回指向`s`的引用。 |
+| `s.assign(args)` | 将`s`中的字符替换成`args`指定的字符。返回一个指向`s`的引用。 |
+| `s.append(args)` | 将`args`指定的字符追加到`s`，返回一个指向`s`的引用。 |
+| `s.replace(range, args)` | 删除`s`中范围`range`中的字符，替换成`args`指定的字符。返回一个指向`s`的引用。 |
+
+### string搜索操作
+
+- `string`类提供了6个不同的搜索函数，每个函数都有4个重载版本。
+- 每个搜索操作都返回一个`string::size_type`值，表示匹配发生位置的下标。如果搜索失败则返回一个名为`string::npos`的`static`成员（类型是`string::size_type`，初始化值是-1，也就是`string`最大的可能大小）。
+
+| 搜索操作 | 解释 |
+|-----|-----|
+| `s.find(args)` | 查找`s`中`args`第一次出现的位置 |
+| `s.rfind(args)` | 查找`s`中`args`最后一次出现的位置 |
+| `s.find_first_of(args)` | 在`s`中查找`args`中任何一个字符第一次出现的位置 |
+| `s.find_last_of(args)` | 在`s`中查找`args`中任何一个字符最后一次出现的位置 |
+| `s.find_first_not_of(args)` | 在`s`中查找第一个不在`args`中的字符 |
+| `s.find_last_not_of(args)` | 在`s`中查找最后一个不在`args`中的字符 |
+
+args必须是一下的形式之一：
+
+| `args`形式 | 解释 |
+|-----|-----|
+| `c, pos` | 从`s`中位置`pos`开始查找字符`c`。`pos`默认是0 |
+| `s2, pos` | 从`s`中位置`pos`开始查找字符串`s`。`pos`默认是0 |
+| `cp, pos` | 从`s`中位置`pos`开始查找指针`cp`指向的以空字符结尾的C风格字符串。`pos`默认是0 |
+| `cp, pos, n` | 从`s`中位置`pos`开始查找指针`cp`指向的前`n`个字符。`pos`和`n`无默认值。 |
+
+### s.compare的几种参数形式
+
+逻辑类似于C标准库的`strcmp`函数，根据`s`是等于、大于还是小于参数指定的字符串，`s.compare`返回0、正数或负数。
+
+| 参数形式 | 解释 |
+|-----|-----|
+| `s2` | 比较`s`和`s2` |
+| `pos1, n1, s2` | 比较`s`从`pos1`开始的`n1`个字符和`s2` |
+| `pos1, n1, s2, pos2, n2` | 比较`s`从`pos1`开始的`n1`个字符和`s2` |
+| `cp` | 比较`s`和`cp`指向的以空字符结尾的字符数组 |
+| `pos1, n1, cp` | 比较`s`从`pos1`开始的`n1`个字符和`cp`指向的以空字符结尾的字符数组 |
+| `pos1, n1, cp, n2` | 比较`s`从`pos1`开始的`n1`个字符和`cp`指向的地址开始`n2`个字符 |
+
+### string和数值转换
+
+| 转换 | 解释 |
+|-----|-----|
+| `to_string(val)` | 一组重载函数，返回数值`val`的`string`表示。`val`可以使任何算术类型。对每个浮点类型和`int`或更大的整型，都有相应版本的`to_string()`。和往常一样，小整型会被提升。 |
+| `stoi(s, p, b)` | 返回`s`起始子串（表示整数内容）的数值，`p`是`s`中第一个非数值字符的下标，默认是0，`b`是转换所用的基数。返回`int` |
+| `stol(s, p, b)` | 返回`long` |
+| `stoul(s, p, b)` | 返回`unsigned long` |
+| `stoll(s, p, b)` | 返回`long long` |
+| `stoull(s, p, b)` | 返回`unsigned long long` |
+| `stof(s, p)` | 返回`s`起始子串（表示浮点数内容）的数值，`p`是`s`中第一个非数值字符的下标，默认是0。返回`float` |
+| `stod(s, p)` | 返回`double` |
+| `stold(s, p)` | 返回`long double` |
