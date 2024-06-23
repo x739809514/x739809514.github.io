@@ -69,7 +69,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "65f6b219dfa8e132",
@@ -146,7 +147,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "bf945dc2629e9869",
+  "active": "3b60e2ba143574d6",
   "lastOpenFiles": [
     "Code/C++/C++ Prime Note.md"
   ]

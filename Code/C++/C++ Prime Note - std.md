@@ -356,3 +356,193 @@ args必须是一下的形式之一：
 | `stof(s, p)` | 返回`s`起始子串（表示浮点数内容）的数值，`p`是`s`中第一个非数值字符的下标，默认是0。返回`float` |
 | `stod(s, p)` | 返回`double` |
 | `stold(s, p)` | 返回`long double` |
+## Some Generics Algorithm
+### Readonly Algorithm
+`find_first_of`: The `find_first_of` algorithm searches the first range for any elements that match any of the elements in the second range. It returns an iterator to the first occurrence of any of the elements from the second range in the first range.
+```c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int main() {
+    std::vector<int> vec1 = {1, 2, 3, 4, 5};
+    std::vector<int> vec2 = {3, 4, 6};
+
+    auto it = std::find_first_of(vec1.cbegin(), vec1.cend(), vec2.cbegin(), vec2.cend());
+
+    if (it != vec1.cend()) {
+        std::cout << "First matching element: " << *it << std::endl;
+    } else {
+        std::cout << "No matching elements found" << std::endl;
+    }
+
+    return 0;
+}
+
+// output
+// First matching element: 3
+```
+### Write to Container
+`back_inserter`: It is used to insert elements at the end of a container. This is particularly useful when using algorithms that generate new elements and you want to append these elements to an existing container.
+Let's say you want to copy elements from one vector to another using `std::copy`. Instead of ensuring the destination vector has enough space, you can use `back_inserter` to automatically expand the destination vector as needed.
+```c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+
+int main() {
+    std::vector<int> src = {1, 2, 3, 4, 5};
+    std::vector<int> dest;
+
+    // Using std::copy with back_inserter
+    std::copy(src.cbegin(), src.cend(), std::back_inserter(dest));
+
+    std::cout << "Destination vector: ";
+    for (const auto &elem : dest) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+// output
+// Destination vector: 1 2 3 4 5
+```
+### Reranging Algorithm
+`unique`: To remove duplicates from a container, you typically follow these steps
+1. `Sort()` the container to bring duplicates together.
+2. Use the `std::unique` algorithm to rearrange the container such that each unique element appears only once, followed by duplicates. `std::unique` returns an iterator to the end of the unique range.
+3. **Use a container operation like `erase` to actually remove the duplicates.**
+```c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int main() {
+    std::vector<int> vec = {5, 3, 8, 3, 5, 9, 1, 5};
+
+    // Step 1: Sort the vector
+    std::sort(vec.begin(), vec.end());
+
+    // Step 2: Use std::unique to move duplicates to the end
+    auto unique_end = std::unique(vec.begin(), vec.end());
+
+    // Step 3: Erase the non-unique elements from the vector
+    vec.erase(unique_end, vec.end());
+
+    // Output the result
+    std::cout << "Vector after removing duplicates: ";
+    for (const auto& elem : vec) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+// output
+// Vector after removing duplicates: 1 3 5 8 9
+```
+### Lambda Expression
+format: `[capture list](parameter list) -> return type {function body}`
+example:
+- `auto wc = find_if(words.begin(), words.end(), [sz](const string &a){return a.size() >= sz;});`
+- `for_each(wc, words.end(), [](const string &s){cout << s << " ";})`
+
+**Value capture**: provided the variable can be copied. `size_t v1 = 42; auto f = [v1] {return v1;};`
+**Reference capture**: It must be ensured that the variable is present when the lambda is executed,
+`auto f2 = [&v1] {return v1;};`
+==Minimise the amount of data captured and avoid **capturing pointers or references** where possible.==
+#### capture list
+`[]`: empty list, `lambda` can't use variable in function
+`[&]`: Implicit capture lists, using **Reference** captures
+`[=]`: Implicit capture lists, using **Value** captures
+`[&, identifier_list]`: elements in `identifier_list` are captured by value, others are captured by reference
+```c++
+// Using a lambda to transform the vector 
+// Capture `multiplier` by value and all other variables by reference 
+std::transform(vec.begin(), vec.end(), vec.begin(), [&, multiplier](int x) { return x * multiplier + offset; });
+```
+`[=, identifier_list]`: elements in `identifier_list` are captured by reference, others are captured by value
+### std :: bind
+#### Binding a Function
+```c++
+#include <iostream>
+#include <functional>
+
+// A simple function to demonstrate binding
+void exampleFunction(int a, int b, int c) {
+    std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
+}
+
+int main() {
+    using namespace std::placeholders; // for _1, _2, etc.
+
+    // Bind the first and third arguments, leaving the second argument as a placeholder
+    auto boundFunction = std::bind(exampleFunction, 10, _1, 20);
+
+    // Call the bound function with one argument; it will fill in the second argument
+    boundFunction(30); // This will call exampleFunction(10, 30, 20)
+
+    return 0;
+}
+```
+#### Binding with Reference
+If you need to pass arguments by reference, use `std::ref` or `std::cref`.
+```c++
+#include <iostream>
+#include <functional>
+
+// A function that modifies its arguments
+void modify(int& a, int b) {
+    a += b;
+}
+
+int main() {
+    using namespace std::placeholders; // for _1, _2, etc.
+
+    int x = 5;
+    int y = 10;
+
+    // Bind the first argument by reference
+    auto boundModify = std::bind(modify, std::ref(x), _1);
+
+    // Call the bound function
+    boundModify(y); // This will call modify(x, 10)
+
+    std::cout << "x after modify: " << x << std::endl; // Output will be 15
+
+    return 0;
+}
+```
+#### Binding with Algorithm
+You can use `std::bind` to adapt functions for use with standard algorithms.
+```c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <functional>
+
+// A simple predicate function
+bool isGreaterThan(int a, int b) {
+    return a > b;
+}
+
+int main() {
+    using namespace std::placeholders; // for _1, _2, etc.
+
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+
+    // Use std::bind to create a unary predicate for std::count_if
+    auto greaterThan3 = std::bind(isGreaterThan, _1, 3);
+
+    int count = std::count_if(vec.begin(), vec.end(), greaterThan3);
+
+    std::cout << "Number of elements greater than 3: " << count << std::endl; // Output will be 2
+
+    return 0;
+}
+```
+
