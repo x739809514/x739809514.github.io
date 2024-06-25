@@ -9,7 +9,7 @@
     * [IlRuntime_Proj](/Proj/ILR_FrameWork/)
     * [SocketLib](/Proj/SocketLib/)
 
-* **Code**
+* **Programming Languages**
     * [C++ Notes](/Code/C++/README.md)
     * [C++ Coding Style](/Code/C++/CodingStyle.md)
     * [C++ Prime Note Basic](/Code/C++/C++%20Prime%20Note.md)
@@ -17,15 +17,15 @@
     * [lua](/Code/lua/)
     * [C# Basic](/Code/CS/)
 
-* **Computer Graphic**
+* **Game Development**
     * [OpenGL](/Notes/Computer%20Graphic/OpenGL/OpenGL.md)
-
-* **Network**
     * [TCP,UDP,WebSocket](/Notes/NetworkBasic/01/)
     * [RUDP](/Notes/NetworkBasic/03/)
     * [ASync in Network](/Notes/NetworkBasic/02/)
-
-* **Unity**
     * [Unity 性能优化](/Notes/Performance%20Optimization/)
     * [寻路算法](/Notes/Unity/PathFinding.md)
+
+* **Others**
+    * [AWS服务器配置git](/Notes/AWS%20部署%20git%20笔记.md)
+    
 

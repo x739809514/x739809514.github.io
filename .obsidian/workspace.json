@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Code/C++/C++ Prime Note - std.md",
+                "file": "_sidebar.md",
                 "mode": "source",
                 "source": false
               }
@@ -69,8 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "65f6b219dfa8e132",
@@ -86,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Code/C++/C++ Prime Note - std.md",
+                "file": "_sidebar.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Code/C++/C++ Prime Note - std.md",
+                "file": "_sidebar.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Code/C++/C++ Prime Note - std.md"
+                "file": "_sidebar.md"
               }
             }
           }
@@ -147,8 +146,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "3b60e2ba143574d6",
+  "active": "bf945dc2629e9869",
   "lastOpenFiles": [
+    "Notes/AWS 部署 git 笔记.md",
+    "_sidebar.md",
+    "Notes/Unity/PathFinding.md",
+    "Code/C++/C++ Prime Note - std.md",
     "Code/C++/C++ Prime Note.md"
   ]
 }
