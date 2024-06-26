@@ -357,6 +357,7 @@ args必须是一下的形式之一：
 | `stod(s, p)` | 返回`double` |
 | `stold(s, p)` | 返回`long double` |
 ## Some Generics Algorithm
+
 ### Readonly Algorithm
 `find_first_of`: The `find_first_of` algorithm searches the first range for any elements that match any of the elements in the second range. It returns an iterator to the first occurrence of any of the elements from the second range in the first range.
 ```c++
@@ -546,3 +547,120 @@ int main() {
 }
 ```
 
+## Associated Container
+
+Different with Sequential Container, Associated Container use `key-value` to store and access element.
+
+#### Common Associated Container
+
+| Container Type     | Describe                              |
+| ------------------ | ------------------------------------- |
+| **In Order**       |                                       |
+| map                | key - value                           |
+| set                | only key                              |
+| multimap           | have multiplie key in map             |
+| multiset           | have multiplie key in set             |
+| ** UnOrder**       |                                       |
+| unordered_map      | using hashcode in map                 |
+| unordered_set      | using hashcode in set                 |
+| unordered_multimap | using hashcode map, has multiplie key |
+| unordered_multiset | using hashcode set, has multiplie key |
+#### Definition
+- map: `map<std::string int> word_count = {{"a",1},{"b",2}};`
+- set: `set<string> exclude = {"the", "a"};`
+
+#### Comparison Func
+If we want to convey a comparison function to container: 
+`multiset<Sales_data, decltype(compareIsbn)*> bookstore(compareIsbn);`
+
+The entire code:
+```c++
+#include <iostream>
+#include <set>
+
+// 假设这是 Sales_data 类的定义
+class Sales_data {
+public:
+    Sales_data(const std::string &isbn) : isbn_(isbn) {}
+    std::string isbn() const { return isbn_; }
+private:
+    std::string isbn_;
+};
+
+// 定义 compareIsbn 函数
+bool compareIsbn(const Sales_data &lhs, const Sales_data &rhs) {
+    return lhs.isbn() < rhs.isbn();
+}
+
+int main() {
+    // 定义 multiset，并使用 compareIsbn 作为排序准则
+    std::multiset<Sales_data, decltype(compareIsbn)*> bookstore(compareIsbn);
+
+    // 插入元素
+    Sales_data book1("12345");
+    Sales_data book2("67890");
+    Sales_data book3("12345");
+
+    bookstore.insert(book1);
+    bookstore.insert(book2);
+    bookstore.insert(book3);
+
+    // 遍历并打印 multiset 中的元素
+    for (const auto &book : bookstore) {
+        std::cout << book.isbn() << std::endl;
+    }
+
+    return 0;
+}
+
+// output
+// 12345
+// 12345
+// 67890
+```
+#### Pair
+one pair saves two data members, and the two types are not required.
+- `pair<T1, T2> p;`
+- `pair<T1, T2> p(v1, v2);`
+- `pair<T1, T2>p = {v1, v2};`
+- `make_pair(v1, v2);`
+#### Operations
+
+| operations |                                                                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| insert     | `c.insert(v)`,`c.emplace(args)`                                                                                                                                                |
+|            | `c.insert(begin(),end())`, `c.insert(il)`                                                                                                                                      |
+|            | `c.insert(pos,v)`, `c.emplace(pos,args)`                                                                                                                                       |
+| delete     | `c.erase(key)`                                                                                                                                                                 |
+|            | `c.erase(pos)`                                                                                                                                                                 |
+|            | `c.erase(begin(),end())`                                                                                                                                                       |
+| Bid        | `c[k]`, `c.at(k)`                                                                                                                                                              |
+| Find       | `c.find(k)`                                                                                                                                                                    |
+|            | `c.count(k)`                                                                                                                                                                   |
+|            | `c.lower_bound(k)`: Returns an iterator pointing to the first element whose keyword is **bigger ot equal than k.**                                                             |
+|            | `c.upper_bound(k)`:Returns an iterator pointing to the first element with a keyword **greater than k.**                                                                        |
+|            | `c.equal_range(k)`: Returns an iterator, pair, representing the range of elements whose keyword is equal to k. If k does not exist, both members of pair are equal to c.end(). |
+###  Out-of-order Containers
+
+- using hash technical
+- Unordered containers are organised in storage as a set of buckets, each holding zero or more elements. Unordered containers use a hash function to map elements to buckets.
+
+**无序容器管理操作**
+
+| 操作                        | 解释                                                                        |
+| ------------------------- | ------------------------------------------------------------------------- |
+| **桶接口**                   |                                                                           |
+| `c.bucket_count()`        | 正在使用的桶的数目                                                                 |
+| `c.max_bucket_count()`    | 容器能容纳的最多的桶的数目                                                             |
+| `c.bucket_size(n)`        | 第`n`个桶中有多少个元素                                                             |
+| `c.bucket(k)`             | 关键字为`k`的元素在哪个桶中                                                           |
+| **桶迭代**                   |                                                                           |
+| `local_iterator`          | 可以用来访问桶中元素的迭代器类型                                                          |
+| `const_local_iterator`    | 桶迭代器的`const`版本                                                            |
+| `c.begin(n)`，`c.end(n)`   | 桶`n`的首元素迭代器                                                               |
+| `c.cbegin(n)`，`c.cend(n)` | 与前两个函数类似，但返回`const_local_iterator`。                                       |
+| **哈希策略**                  |                                                                           |
+| `c.load_factor()`         | 每个桶的平均元素数量，返回`float`值。                                                    |
+| `c.max_load_factor()`     | `c`试图维护的平均比桶大小，返回`float`值。`c`会在需要时添加新的桶，以使得`load_factor<=max_load_factor` |
+| `c.rehash(n)`             | 重组存储，使得`bucket_count>=n`，且`bucket_count>size/max_load_factor`             |
+| `c.reverse(n)`            | 重组存储，使得`c`可以保存`n`个元素且不必`rehash`。                                          |

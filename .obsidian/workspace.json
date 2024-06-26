@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Notes/AWS 部署 git 笔记.md",
+                "file": "Code/C++/C++ Prime Note - std.md",
                 "mode": "source",
                 "source": false
               }
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Notes/AWS 部署 git 笔记.md",
+                "file": "Code/C++/C++ Prime Note - std.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Notes/AWS 部署 git 笔记.md",
+                "file": "Code/C++/C++ Prime Note - std.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Notes/AWS 部署 git 笔记.md"
+                "file": "Code/C++/C++ Prime Note - std.md"
               }
             }
           }
@@ -149,8 +149,8 @@
   },
   "active": "bf945dc2629e9869",
   "lastOpenFiles": [
-    "Notes/Unity/PathFinding.md",
     "Notes/AWS 部署 git 笔记.md",
+    "Notes/Unity/PathFinding.md",
     "_sidebar.md",
     "Code/C++/C++ Prime Note - std.md",
     "Code/C++/C++ Prime Note.md"
