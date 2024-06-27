@@ -664,3 +664,48 @@ one pair saves two data members, and the two types are not required.
 | `c.max_load_factor()`     | `c`试图维护的平均比桶大小，返回`float`值。`c`会在需要时添加新的桶，以使得`load_factor<=max_load_factor` |
 | `c.rehash(n)`             | 重组存储，使得`bucket_count>=n`，且`bucket_count>size/max_load_factor`             |
 | `c.reverse(n)`            | 重组存储，使得`c`可以保存`n`个元素且不必`rehash`。                                          |
+## Dynamic Memory
+
+- Life cycle of an object: 
+	- Global objects are allocated at the start of the programme and destroyed at the end. 
+	- Local objects are created on entry to the programme block and destroyed on leaving the block. 
+	-  Dynamically allocated objects: can only be released explicitly.
+	-  **Local `static` objects** are allocated **before first use** and destroyed at the **end of the programme**. 
+
+- object in memory:
+	- static memory: store **local static varibale**, **static class members** and **global variable**.
+	- heap: store object which is dynamic allocated
+	- static memory: Used to hold non-`static` objects defined within a function.
+		This means the non-static local variables in the funtion are all stored in stack. However, if user use dynamic alloc in the function, the instance will be store in heap, and the pointer points to the instance will be store in stack.
+```c++
+void foo() {
+	int a = 10; // non-static variable in stack 
+	static int b = 20; // static local variables, stored in static memory
+	A* a = new A(); // `a` is a pointer stored on the stack, while `new A()`   allocates objects on the heap
+    // Using the object `a`
+    delete a; // Freeing Heap Memory
+}
+```
+
+`new`: alloc space for object in memory and return a pointer points to the object
+`delete`: receive a pointer and delete the object then release the space
+
+### Smart pointer
+
+- unique_ptr
+- shared_ptr
+- weak_ptr
+
+1. With smart pointers, unique_ptr is preferred to shared_ptr unless you find a good reason to use shared_ptr.
+2. Be careful about circular reference in shared_ptr
+3. weak_ptr can help to avoid circular reference
+### Allocator
+
+allocator is a template, like `allocator<string> alloc`.
+
+| operation             | description                                                                                                                                                                                                                                                                                                     |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `allocator<T> a`      | defines an `allocator` object named a that allocates memory for objects of type `T`                                                                                                                                                                                                                             |
+| `a.allocate(n)`       | Allocate a section of raw, unconstructed memory to hold `n` objects of type `T`.                                                                                                                                                                                                                                |
+| `a.deallocate(p, n)`  | Free the memory starting at the address in the `T*` pointer p that holds n objects of type T; p must be a pointer previously returned by `allocate`. and n must be the size requested when p was created. Before calling deallocate, the user must call destroy on each object created in this block of memory. |
+| `a.construct(p,args)` | p must be a pointer of type `T*` pointing to a block of raw memory; `args` is passed to a constructor of type T to construct an object in the memory pointed to by p.                                                                                                                                           |
