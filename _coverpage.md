@@ -9,4 +9,4 @@
 </div>
 
 [GitHub](https://github.com/x739809514)
-[GetStarted](#JialiangXin)
+[GetStarted](#about-me)
