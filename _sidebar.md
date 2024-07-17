@@ -1,6 +1,6 @@
 <!-- docs/_sidebar.md -->
 
-* [CV](/README.md)
+* [Introduce](/README.md)
 
 * **Projects**
     * [Unreal Racing Game](/Proj/Racing%20Game.md)
