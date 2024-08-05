@@ -26,6 +26,10 @@
     * [Unity 性能优化](/Notes/Performance%20Optimization/)
     * [寻路算法](/Notes/Unity/PathFinding.md)
 
+* AI
+    * [NLP基础知识](/Notes/NLP/NLP基础知识.md)
+    * [Glove](/Notes/NLP/GloVe.md)
+
 * **Others**
     * [AWS服务器配置git](/Notes/AWS%20部署%20git%20笔记.md)
     
