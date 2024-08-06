@@ -28,7 +28,7 @@
 
 * AI
     * [NLP基础知识](/Notes/NLP/NLP基础知识.md)
-    * [Glove](/Notes/NLP/GloVe.md)
+    * [案例代码分析（一）](案例代码分析（一）.md)
 
 * **Others**
     * [AWS服务器配置git](/Notes/AWS%20部署%20git%20笔记.md)
