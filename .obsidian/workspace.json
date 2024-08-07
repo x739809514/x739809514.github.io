@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Notes/NLP/案例代码分析（一）.md",
+                "file": "Notes/NLP/HuggingFace.md",
                 "mode": "source",
                 "source": false
               }
@@ -97,7 +97,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Notes/NLP/案例代码分析（一）.md",
+                "file": "Notes/NLP/HuggingFace.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,7 +114,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Notes/NLP/案例代码分析（一）.md",
+                "file": "Notes/NLP/HuggingFace.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -137,7 +137,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Notes/NLP/案例代码分析（一）.md"
+                "file": "Notes/NLP/HuggingFace.md"
               }
             }
           }
@@ -161,6 +161,7 @@
   "active": "bf945dc2629e9869",
   "lastOpenFiles": [
     "Notes/NLP/NLP基础知识.md",
+    "Notes/NLP/HuggingFace.md",
     "Notes/NLP/案例代码分析（一）.md",
     "_sidebar.md",
     "Notes/AWS 部署 git 笔记.md",
