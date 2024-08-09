@@ -9,6 +9,7 @@ Hugging Face 是一家致力于自然语言处理（NLP）技术的公司，同�
 
 ### 使用案例（一）
 
+定义一个task,然后从开源社区中把model的名字拷贝下来使用
 ```python
 #%% packages
 from transformers import pipeline
@@ -93,4 +94,48 @@ pipe(context="The Big Apple is a nickname for New York City.", question="What is
  'end': 45,
  'answer': 'a nickname for New York City'
  }
+```
+## Zero-Shot Classification
+
+Zero-shot classification 是一种机器学习技术，它允许模型在没有针对特定任务进行训练的情况下，对未见过的类别进行分类。这种方法依赖于模型的泛化能力，使其能够处理新类别的输入，并推断出输入与这些新类别的关系。
+### 主要特点：
+
+- **无需特定类别训练**: 传统的分类模型需要在训练时明确地针对每个类别进行学习，而 zero-shot classification 则不需要对特定类别进行训练。模型通过理解任务的描述或类别的语义信息，能够处理新的类别。
+- **灵活性**: 由于模型不局限于预先定义的类别，zero-shot classification 提供了极大的灵活性，适用于需要动态处理不同类别的应用场景。
+### 工作原理：
+
+Zero-shot classification 的核心在于模型如何理解输入和类别之间的关系。通常，这类模型会利用预训练的语言模型，如 BERT、GPT 等，这些模型具备强大的语义理解能力。以下是零样本分类的基本工作流程：
+1. **输入文本**: 用户提供一个文本或句子，模型需要对此进行分类。
+2. **类别标签**: 用户提供一组类别标签（可以是几个单词或一个描述性短语），这些类别标签可能是模型在训练中未见过的。
+3. **语义匹配**: 模型将输入文本与每个类别标签进行语义匹配，计算它们之间的相似性。
+4. **概率输出**: 模型输出每个类别的概率分布，表示输入文本属于各个类别的可能性。
+```python
+#%% packages
+from transformers import pipeline
+import pandas as pd
+
+#%% Classifier
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+ # %% Data Preparation
+# first example: Raymond Chandler "The Big Sleep" (crime novel)
+# second example: J.R.R. Tolkien "The Lord of the Rings" (fantasy novel)
+# third example: Bill Bryson "A Short History of Nearly Everything"
+
+documents = ["It was about eleven o’clock in the morning, mid October, with the sun not shining and a look of hard wet rain in the clearness of the foothills. I was wearing my powder-blue suit, with dark blue shirt, tie and display handkerchief, black brogues, black wool socks with dark blue clocks on them. I was neat, clean, shaved and sober, and I didn’t care who knew it. I was everything the well-dressed private detective ought to be. I was calling on four million dollars.",
+
+             "When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.",
+
+             "Welcome. And congratulations. I am delighted that you could make it. Getting here wasn’t easy, I know. In fact, I suspect it was a little tougher than you realize. To begin with, for you to be here now trillions of drifting atoms had somehow to assemble in an intricate and curiously obliging manner to create you. It’s an arrangement so specialized and particular that it has never been tried before and will only exist this once."
+             ]
+
+candidate_labels=["history", "crime", "fantasy"]
+
+#%% classify documents, 同时把参数也传入进去
+res = classifier(documents, candidate_labels = candidate_labels)
+
+#%% visualize results
+pd.DataFrame(res[1]).plot.bar(x='labels', y='scores', title='Lord of the Rings')
+
+# %% flag multiple labels
+classifier(documents[0], candidate_labels = candidate_labels, multi_label=False)
 ```

@@ -29,6 +29,8 @@
 * AI
     * [NLP基础知识](/Notes/NLP/NLP基础知识.md)
     * [案例代码分析（一）](/Notes/NLP/案例代码分析（一）.md)
+    * [HuggingFace](/Notes/NLP/HuggingFace.md)
+    * [Fine-Tuning](/Notes/NLP/Model%20Fine-Tuning.md)
 
 * **Others**
     * [AWS服务器配置git](/Notes/AWS%20部署%20git%20笔记.md)

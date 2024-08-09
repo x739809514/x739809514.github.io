@@ -160,8 +160,9 @@
   },
   "active": "bf945dc2629e9869",
   "lastOpenFiles": [
-    "Notes/NLP/NLP基础知识.md",
+    "Notes/NLP/Model Fine-Tuning.md",
     "Notes/NLP/HuggingFace.md",
+    "Notes/NLP/NLP基础知识.md",
     "Notes/NLP/案例代码分析（一）.md",
     "_sidebar.md",
     "Notes/AWS 部署 git 笔记.md",
