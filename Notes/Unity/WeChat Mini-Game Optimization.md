@@ -28,6 +28,7 @@ Suppose you have a UI panel that contains the following elements:
 - A timer (dynamic)
 - A life bar (dynamic)
 - An avatar (static)
+
 ```
 StaticCanvas (Canvas)
     ├── BackgroundImage (Image)   
