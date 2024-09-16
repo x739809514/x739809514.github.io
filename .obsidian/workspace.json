@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Notes/Unity/WeChat Mini-Game Optimization.md",
+                "file": "Notes/Unity/Addressable Note.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Notes/Unity/WeChat Mini-Game Optimization.md",
+                "file": "Notes/Unity/Addressable Note.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Notes/Unity/WeChat Mini-Game Optimization.md",
+                "file": "Notes/Unity/Addressable Note.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Notes/Unity/WeChat Mini-Game Optimization.md"
+                "file": "Notes/Unity/Addressable Note.md"
               }
             }
           }
@@ -148,8 +148,16 @@
   },
   "active": "bf945dc2629e9869",
   "lastOpenFiles": [
-    "_sidebar.md",
+    "Pasted image 20240916151938.png",
     "Notes/Unity/WeChat Mini-Game Optimization.md",
+    "addressable2.png",
+    "Notes/Unity/Addressable Note.md",
+    "Pasted image 20240708185136.png",
+    "addressable1.png",
+    "Connect.md",
+    "me.png",
+    "racing_01.jpg",
+    "_sidebar.md",
     "Notes/Performance Optimization/README.md",
     "Notes/Unity/PathFinding.md",
     "Notes/NLP/HuggingFace.md",
@@ -159,10 +167,8 @@
     "Notes/AWS 部署 git 笔记.md",
     "Notes/NLP",
     "Proj/Racing Game.md",
-    "racing_01.jpg",
     "Proj/imgs/racing_01.jpg",
     "Proj/imgs",
-    "Pasted image 20240708185136.png",
     "README.md",
     "Code/C++/C++ Prime Note - std.md",
     "Code/C++/CodingStyle.md",

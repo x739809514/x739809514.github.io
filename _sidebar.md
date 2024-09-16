@@ -26,6 +26,7 @@
     * [Unity 性能优化](/Notes/Performance%20Optimization/)
     * [寻路算法](/Notes/Unity/PathFinding.md)
     * [WeChat MiniGame](/Notes/Unity/WeChat%20Mini-Game%20Optimization.md)
+    * [Addressable note](/Notes/Unity/Addressable%20Note.md)
 
 * AI
     * [NLP基础知识](/Notes/NLP/NLP基础知识.md)
