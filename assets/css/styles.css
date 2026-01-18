@@ -255,7 +255,7 @@ a {
   box-shadow: var(--shadow);
   display: grid;
   gap: 12px;
-  min-height: 210px;
+  min-height: 300px;
   transform: translateY(16px);
   opacity: 0;
   animation: rise 0.8s ease forwards;
@@ -264,6 +264,8 @@ a {
 .link-button {
   justify-self: start;
   margin-top: 6px;
+  height: 42px;
+  padding: 0 18px;
 }
 
 .card-image {
