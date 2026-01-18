@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Personal Brand Studio</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Personal Brand</div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="notes.html">Notes</a>
+        <a href="admin/login.html">Admin</a>
+      </nav>
+      <a class="nav-cta" href="notes.html">Read Notes</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <p class="badge" data-profile-location>Location</p>
+        <h1 data-profile-name>Alex Mercer</h1>
+        <p data-profile-title>Product Designer + Builder</p>
+        <p data-profile-bio>
+          I craft warm, human-centered digital products and document the messy middle. This space is my studio log, gallery, and slow thinking lab.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="gallery.html">View Gallery</a>
+          <a class="button" href="notes.html">Browse Notes</a>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <div class="avatar">AM</div>
+        <div>
+          <strong>Currently</strong>
+          <p>Exploring tactile interfaces, playful dashboards, and editorial layouts for indie teams.</p>
+        </div>
+        <div>
+          <strong>Find me</strong>
+          <div class="social-links" data-profile-socials>
+            <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Gallery Highlights</h2>
+        <a class="button" href="gallery.html">See all</a>
+      </div>
+      <div class="card-grid" data-gallery-preview></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Latest Notes</h2>
+        <a class="button" href="notes.html">Archive</a>
+      </div>
+      <div class="note-list" data-notes-preview></div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <p>Built for storytelling, prototypes, and thoughtful making.</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

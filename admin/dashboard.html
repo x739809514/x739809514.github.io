@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Personal Brand</div>
+      </div>
+      <nav class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../gallery.html">Gallery</a>
+        <a href="../notes.html">Notes</a>
+      </nav>
+      <button class="nav-cta" data-logout>Log out</button>
+    </div>
+  </header>
+
+  <main class="container" data-admin-root>
+    <section class="page-hero">
+      <h1>Admin Studio</h1>
+      <p>Update your profile, showcase new work, and publish fresh notes.</p>
+    </section>
+
+    <section class="section admin-shell">
+      <aside class="admin-nav">
+        <strong>Workspace</strong>
+        <a href="#profile">Profile</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#notes">Notes</a>
+      </aside>
+
+      <div>
+        <div id="profile" class="admin-card">
+          <h3>Profile</h3>
+          <form class="form" data-profile-form>
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="text" name="title" placeholder="Title" required />
+            <textarea name="bio" placeholder="Short bio" required></textarea>
+            <input type="text" name="location" placeholder="Location" />
+            <input type="url" name="github" placeholder="GitHub URL" />
+            <input type="url" name="linkedin" placeholder="LinkedIn URL" />
+            <input type="url" name="x" placeholder="X URL" />
+            <button class="button primary" type="submit">Save Profile</button>
+          </form>
+        </div>
+
+        <div id="gallery" class="admin-card" style="margin-top: 22px;">
+          <h3>Gallery</h3>
+          <form class="form" data-gallery-form>
+            <input type="text" name="title" placeholder="Project title" required />
+            <input type="text" name="detail" placeholder="Short detail" required />
+            <input type="text" name="image" placeholder="Image label" />
+            <button class="button primary" type="submit">Add to Gallery</button>
+          </form>
+          <div class="note-list" data-gallery-admin></div>
+        </div>
+
+        <div id="notes" class="admin-card" style="margin-top: 22px;">
+          <h3>Notes</h3>
+          <form class="form" data-notes-form>
+            <input type="text" name="title" placeholder="Note title" required />
+            <input type="date" name="date" required />
+            <select name="category" required>
+              <option value="Product">Product</option>
+              <option value="Strategy">Strategy</option>
+              <option value="Notes">Notes</option>
+            </select>
+            <textarea name="content" placeholder="Markdown content" required></textarea>
+            <button class="button primary" type="submit">Publish Note</button>
+          </form>
+          <div class="note-list" data-notes-admin></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

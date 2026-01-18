@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Personal Brand</div>
+      </div>
+      <nav class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../gallery.html">Gallery</a>
+        <a href="../notes.html">Notes</a>
+      </nav>
+      <a class="nav-cta" href="../index.html">Back Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1>Admin Access</h1>
+      <p>Private workspace for managing the profile, gallery, and notes.</p>
+    </section>
+
+    <section class="section">
+      <div class="admin-card">
+        <form class="form" data-login-form>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" placeholder="Minimum 6 characters" required />
+          </label>
+          <button class="button primary" type="submit">Enter Admin</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
