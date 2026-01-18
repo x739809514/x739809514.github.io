@@ -44,6 +44,10 @@
             <input type="text" name="title" placeholder="Title" required />
             <textarea name="bio" placeholder="Short bio" required></textarea>
             <input type="text" name="location" placeholder="Location" />
+            <label class="file-upload">
+              Upload Avatar
+              <input type="file" name="avatarFile" accept="image/*" />
+            </label>
             <input type="url" name="github" placeholder="GitHub URL" />
             <input type="url" name="linkedin" placeholder="LinkedIn URL" />
             <input type="url" name="x" placeholder="X URL" />
@@ -59,7 +63,7 @@
             <input type="url" name="link" placeholder="Project link (https://...)" />
             <label class="file-upload">
               Upload Image
-              <input type="file" name="imageFile" accept="image/*" required />
+              <input type="file" name="imageFile" accept="image/*" />
             </label>
             <div class="form-actions">
               <button class="button primary" type="submit" data-gallery-submit>Add to Gallery</button>

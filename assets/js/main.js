@@ -11,6 +11,7 @@ const defaultProfile = {
   title: "Product Designer + Builder",
   bio: "I craft warm, human-centered digital products and document the messy middle. This space is my studio log, gallery, and slow thinking lab.",
   location: "Austin / Remote",
+  avatarData: "",
   socials: {
     github: "https://github.com/",
     linkedin: "https://linkedin.com/",
@@ -199,11 +200,28 @@ const renderHome = () => {
   const bioEl = document.querySelector("[data-profile-bio]");
   const locationEl = document.querySelector("[data-profile-location]");
   const socialsEl = document.querySelector("[data-profile-socials]");
+  const avatarEl = document.querySelector("[data-profile-avatar]");
 
   if (nameEl) nameEl.textContent = profile.name;
   if (titleEl) titleEl.textContent = profile.title;
   if (bioEl) bioEl.textContent = profile.bio;
   if (locationEl) locationEl.textContent = profile.location;
+  if (avatarEl) {
+    if (profile.avatarData) {
+      avatarEl.textContent = "";
+      avatarEl.style.backgroundImage = `url(${profile.avatarData})`;
+      avatarEl.style.backgroundSize = "cover";
+      avatarEl.style.backgroundPosition = "center";
+    } else {
+      avatarEl.style.backgroundImage = "";
+      avatarEl.textContent = profile.name
+        .split(" ")
+        .map((part) => part[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+    }
+  }
 
   if (socialsEl) {
     socialsEl.innerHTML = "";
@@ -409,13 +427,24 @@ const initAdminDashboard = () => {
     profileForm.linkedin.value = profile.socials.linkedin;
     profileForm.x.value = profile.socials.x;
 
-    profileForm.addEventListener("submit", (event) => {
+    profileForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+      const avatarFile = profileForm.avatarFile.files[0];
+      let avatarData = profile.avatarData || "";
+      try {
+        if (avatarFile) {
+          avatarData = await compressImageFile(avatarFile, { maxWidth: 240, quality: 0.7 });
+        }
+      } catch (error) {
+        alert("Avatar upload failed. Please try again.");
+        return;
+      }
       const updated = {
         name: profileForm.name.value,
         title: profileForm.title.value,
         bio: profileForm.bio.value,
         location: profileForm.location.value,
+        avatarData,
         socials: {
           github: profileForm.github.value,
           linkedin: profileForm.linkedin.value,
@@ -423,6 +452,7 @@ const initAdminDashboard = () => {
         }
       };
       saveData(STORAGE_KEYS.profile, updated);
+      renderHome();
       alert("Profile updated.");
     });
   }
@@ -440,7 +470,7 @@ const initAdminDashboard = () => {
     const imageMeta = getGalleryImage(item);
     galleryForm.link.value = item.link || "";
     galleryForm.imageFile.required = false;
-    if (gallerySubmit) gallerySubmit.textContent = "Update Gallery Item";
+    if (gallerySubmit) gallerySubmit.textContent = "Save Changes";
     if (galleryCancel) galleryCancel.style.display = "inline-flex";
   };
 
@@ -448,7 +478,7 @@ const initAdminDashboard = () => {
     if (!galleryForm) return;
     galleryForm.reset();
     delete galleryForm.dataset.editId;
-    galleryForm.imageFile.required = true;
+    galleryForm.imageFile.required = false;
     if (gallerySubmit) gallerySubmit.textContent = "Add to Gallery";
     if (galleryCancel) galleryCancel.style.display = "none";
   };
