@@ -243,8 +243,9 @@ a {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 240px);
   gap: 20px;
+  justify-content: start;
 }
 
 .card {
@@ -258,6 +259,11 @@ a {
   transform: translateY(16px);
   opacity: 0;
   animation: rise 0.8s ease forwards;
+}
+
+.link-button {
+  justify-self: start;
+  margin-top: 6px;
 }
 
 .card-image {
@@ -505,6 +511,10 @@ a {
   .admin-shell {
     grid-template-columns: 1fr;
   }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 220px);
+  }
 }
 
 @media (max-width: 640px) {
@@ -520,5 +530,9 @@ a {
   .note-item {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
   }
 }

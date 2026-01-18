@@ -112,7 +112,7 @@ const formatDate = (value) => {
 const getGalleryImage = (item) => {
   const rawImage = item.imageData || item.image || "";
   const isUrl = typeof rawImage === "string" && /^(data:image|https?:\/\/)/.test(rawImage);
-  const label = item.imageLabel || (isUrl ? "" : rawImage) || "Gallery Image";
+  const label = item.title || "Gallery Image";
   return {
     url: isUrl ? rawImage : "",
     label
@@ -144,6 +144,16 @@ const createGalleryCard = (item, index) => {
   card.appendChild(imageEl);
   card.appendChild(titleEl);
   card.appendChild(detailEl);
+
+  if (item.link) {
+    const linkBtn = document.createElement("a");
+    linkBtn.className = "button link-button";
+    linkBtn.href = item.link;
+    linkBtn.target = "_blank";
+    linkBtn.rel = "noreferrer";
+    linkBtn.textContent = "View Project";
+    card.appendChild(linkBtn);
+  }
   return card;
 };
 
@@ -428,7 +438,7 @@ const initAdminDashboard = () => {
     galleryForm.title.value = item.title;
     galleryForm.detail.value = item.detail;
     const imageMeta = getGalleryImage(item);
-    galleryForm.imageLabel.value = imageMeta.label || "";
+    galleryForm.link.value = item.link || "";
     galleryForm.imageFile.required = false;
     if (gallerySubmit) gallerySubmit.textContent = "Update Gallery Item";
     if (galleryCancel) galleryCancel.style.display = "inline-flex";
@@ -474,6 +484,12 @@ const initAdminDashboard = () => {
       textWrap.appendChild(title);
       textWrap.appendChild(document.createElement("br"));
       textWrap.appendChild(detail);
+      if (item.link) {
+        textWrap.appendChild(document.createElement("br"));
+        const link = document.createElement("span");
+        link.textContent = item.link;
+        textWrap.appendChild(link);
+      }
 
       info.appendChild(thumb);
       info.appendChild(textWrap);
@@ -525,7 +541,7 @@ const initAdminDashboard = () => {
         title: galleryForm.title.value,
         detail: galleryForm.detail.value,
         imageData,
-        imageLabel: galleryForm.imageLabel.value || ""
+        link: galleryForm.link.value.trim()
       };
       if (existing) {
         const index = gallery.findIndex((item) => item.id === editId);
