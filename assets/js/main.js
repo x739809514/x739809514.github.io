@@ -108,6 +108,54 @@ const formatDate = (value) => {
   });
 };
 
+const getGalleryImage = (item) => {
+  const rawImage = item.imageData || item.image || "";
+  const isUrl = typeof rawImage === "string" && /^(data:image|https?:\/\/)/.test(rawImage);
+  const label = item.imageLabel || (isUrl ? "" : rawImage) || "Gallery Image";
+  return {
+    url: isUrl ? rawImage : "",
+    label
+  };
+};
+
+const createGalleryCard = (item, index) => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.style.animationDelay = `${index * 0.12}s`;
+
+  const imageEl = document.createElement("div");
+  imageEl.className = "card-image";
+  const imageMeta = getGalleryImage(item);
+  if (imageMeta.url) {
+    imageEl.classList.add("has-image");
+    imageEl.style.backgroundImage = `url(${imageMeta.url})`;
+    imageEl.textContent = imageMeta.label;
+  } else {
+    imageEl.textContent = imageMeta.label;
+  }
+
+  const titleEl = document.createElement("h3");
+  titleEl.textContent = item.title;
+
+  const detailEl = document.createElement("p");
+  detailEl.textContent = item.detail;
+
+  card.appendChild(imageEl);
+  card.appendChild(titleEl);
+  card.appendChild(detailEl);
+  return card;
+};
+
+const readImageFile = (file) => {
+  if (!file) return Promise.resolve("");
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+};
+
 const renderHome = () => {
   const profile = loadData(STORAGE_KEYS.profile, defaultProfile);
   const gallery = loadData(STORAGE_KEYS.gallery, defaultGallery).slice(0, 3);
@@ -145,15 +193,7 @@ const renderHome = () => {
   if (galleryWrap) {
     galleryWrap.innerHTML = "";
     gallery.forEach((item, index) => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.animationDelay = `${index * 0.12}s`;
-      card.innerHTML = `
-        <div class="card-image">${item.image}</div>
-        <h3>${item.title}</h3>
-        <p>${item.detail}</p>
-      `;
-      galleryWrap.appendChild(card);
+      galleryWrap.appendChild(createGalleryCard(item, index));
     });
   }
 
@@ -183,15 +223,7 @@ const renderGallery = () => {
 
   galleryWrap.innerHTML = "";
   gallery.forEach((item, index) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style.animationDelay = `${index * 0.12}s`;
-    card.innerHTML = `
-      <div class="card-image">${item.image}</div>
-      <h3>${item.title}</h3>
-      <p>${item.detail}</p>
-    `;
-    galleryWrap.appendChild(card);
+    galleryWrap.appendChild(createGalleryCard(item, index));
   });
 };
 
@@ -319,36 +351,122 @@ const initAdminDashboard = () => {
 
   const galleryForm = document.querySelector("[data-gallery-form]");
   const galleryList = document.querySelector("[data-gallery-admin]");
+  const gallerySubmit = document.querySelector("[data-gallery-submit]");
+  const galleryCancel = document.querySelector("[data-gallery-cancel]");
+
+  const startGalleryEdit = (item) => {
+    if (!galleryForm) return;
+    galleryForm.dataset.editId = item.id;
+    galleryForm.title.value = item.title;
+    galleryForm.detail.value = item.detail;
+    const imageMeta = getGalleryImage(item);
+    galleryForm.imageLabel.value = imageMeta.label || "";
+    galleryForm.imageFile.required = false;
+    if (gallerySubmit) gallerySubmit.textContent = "Update Gallery Item";
+    if (galleryCancel) galleryCancel.style.display = "inline-flex";
+  };
+
+  const resetGalleryForm = () => {
+    if (!galleryForm) return;
+    galleryForm.reset();
+    delete galleryForm.dataset.editId;
+    galleryForm.imageFile.required = true;
+    if (gallerySubmit) gallerySubmit.textContent = "Add to Gallery";
+    if (galleryCancel) galleryCancel.style.display = "none";
+  };
 
   const renderGalleryAdmin = () => {
     if (!galleryList) return;
     galleryList.innerHTML = "";
     gallery.forEach((item) => {
+      const imageMeta = getGalleryImage(item);
       const row = document.createElement("div");
-      row.className = "note-item";
-      row.innerHTML = `
-        <div>
-          <strong>${item.title}</strong><br />
-          <span>${item.detail}</span>
-        </div>
-        <button class="button" data-remove-id="${item.id}">Remove</button>
-      `;
+      row.className = "note-item gallery-admin-row";
+
+      const info = document.createElement("div");
+      info.className = "gallery-admin-info";
+
+      let thumb;
+      if (imageMeta.url) {
+        thumb = document.createElement("img");
+        thumb.className = "admin-thumbnail";
+        thumb.src = imageMeta.url;
+        thumb.alt = imageMeta.label;
+      } else {
+        thumb = document.createElement("div");
+        thumb.className = "admin-thumbnail placeholder";
+        thumb.textContent = imageMeta.label;
+      }
+
+      const textWrap = document.createElement("div");
+      const title = document.createElement("strong");
+      title.textContent = item.title;
+      const detail = document.createElement("span");
+      detail.textContent = item.detail;
+      textWrap.appendChild(title);
+      textWrap.appendChild(document.createElement("br"));
+      textWrap.appendChild(detail);
+
+      info.appendChild(thumb);
+      info.appendChild(textWrap);
+
+      const actions = document.createElement("div");
+      actions.className = "admin-actions";
+      const editBtn = document.createElement("button");
+      editBtn.className = "button";
+      editBtn.type = "button";
+      editBtn.textContent = "Edit";
+      editBtn.setAttribute("data-edit-id", item.id);
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "button";
+      removeBtn.type = "button";
+      removeBtn.textContent = "Remove";
+      removeBtn.setAttribute("data-remove-id", item.id);
+      actions.appendChild(editBtn);
+      actions.appendChild(removeBtn);
+
+      row.appendChild(info);
+      row.appendChild(actions);
       galleryList.appendChild(row);
     });
   };
 
   if (galleryForm) {
-    galleryForm.addEventListener("submit", (event) => {
+    galleryForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+      const editId = galleryForm.dataset.editId;
+      const existing = editId ? gallery.find((item) => item.id === editId) : null;
+      const imageFile = galleryForm.imageFile.files[0];
+      let imageData = existing ? existing.imageData : "";
+      try {
+        if (imageFile) {
+          imageData = await readImageFile(imageFile);
+        }
+      } catch (error) {
+        alert("Image upload failed. Please try again.");
+        return;
+      }
+
+      if (!imageData && !existing) {
+        alert("Please upload an image for the gallery item.");
+        return;
+      }
+
       const newItem = {
-        id: `gal-${Date.now()}`,
+        id: editId || `gal-${Date.now()}`,
         title: galleryForm.title.value,
         detail: galleryForm.detail.value,
-        image: galleryForm.image.value || "New Work"
+        imageData,
+        imageLabel: galleryForm.imageLabel.value || ""
       };
-      gallery.unshift(newItem);
+      if (existing) {
+        const index = gallery.findIndex((item) => item.id === editId);
+        gallery.splice(index, 1, newItem);
+      } else {
+        gallery.unshift(newItem);
+      }
       saveData(STORAGE_KEYS.gallery, gallery);
-      galleryForm.reset();
+      resetGalleryForm();
       renderGalleryAdmin();
     });
   }
@@ -357,6 +475,12 @@ const initAdminDashboard = () => {
     galleryList.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
+      const editId = target.getAttribute("data-edit-id");
+      if (editId) {
+        const item = gallery.find((entry) => entry.id === editId);
+        if (item) startGalleryEdit(item);
+        return;
+      }
       const removeId = target.getAttribute("data-remove-id");
       if (!removeId) return;
       const index = gallery.findIndex((item) => item.id === removeId);
@@ -364,7 +488,16 @@ const initAdminDashboard = () => {
         gallery.splice(index, 1);
         saveData(STORAGE_KEYS.gallery, gallery);
         renderGalleryAdmin();
+        if (galleryForm && galleryForm.dataset.editId === removeId) {
+          resetGalleryForm();
+        }
       }
+    });
+  }
+
+  if (galleryCancel) {
+    galleryCancel.addEventListener("click", () => {
+      resetGalleryForm();
     });
   }
 

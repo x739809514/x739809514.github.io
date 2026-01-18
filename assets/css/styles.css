@@ -268,6 +268,15 @@ a {
   place-items: center;
   font-weight: 600;
   color: #522c1f;
+  text-align: center;
+  padding: 12px;
+}
+
+.card-image.has-image {
+  background-size: cover;
+  background-position: center;
+  color: #f7f1ea;
+  text-shadow: 0 2px 10px rgba(17, 16, 20, 0.5);
 }
 
 .card h3 {
@@ -408,6 +417,45 @@ a {
 .form textarea {
   min-height: 140px;
   resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery-admin-row {
+  align-items: center;
+}
+
+.gallery-admin-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-thumbnail {
+  width: 72px;
+  height: 54px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: rgba(17, 16, 20, 0.08);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 6px;
+}
+
+.admin-thumbnail.placeholder {
+  font-weight: 600;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
 }
 
 @keyframes rise {
