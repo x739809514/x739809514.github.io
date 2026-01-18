@@ -2,7 +2,8 @@ const STORAGE_KEYS = {
   profile: "personalBrand.profile",
   gallery: "personalBrand.gallery",
   notes: "personalBrand.notes",
-  auth: "personalBrand.auth"
+  auth: "personalBrand.auth",
+  adminCredentials: "personalBrand.adminCredentials"
 };
 
 const defaultProfile = {
@@ -288,6 +289,17 @@ const setAuthenticated = (value) => {
   localStorage.setItem(STORAGE_KEYS.auth, value ? "true" : "false");
 };
 
+const loadAdminCredentials = () => {
+  return loadData(STORAGE_KEYS.adminCredentials, null);
+};
+
+const saveAdminCredentials = (email, password) => {
+  saveData(STORAGE_KEYS.adminCredentials, {
+    email,
+    password
+  });
+};
+
 const guardAdmin = () => {
   const adminRoot = document.querySelector("[data-admin-root]");
   if (!adminRoot) return;
@@ -301,15 +313,49 @@ const initLogin = () => {
   const form = document.querySelector("[data-login-form]");
   if (!form) return;
 
+  const hint = document.querySelector("[data-login-hint]");
+  const submitLabel = document.querySelector("[data-login-submit]");
+  const credentials = loadAdminCredentials();
+  if (hint) {
+    hint.textContent = credentials
+      ? "Enter the saved admin email and password to continue."
+      : "No admin account found yet. Create one now.";
+  }
+  if (submitLabel) {
+    submitLabel.textContent = credentials ? "Enter Admin" : "Create Admin";
+  }
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+    const emailField = form.querySelector("input[type=\"email\"]");
     const password = form.querySelector("input[type=\"password\"]");
-    if (password && password.value.trim().length >= 6) {
+    const email = emailField ? emailField.value.trim() : "";
+    const passValue = password ? password.value.trim() : "";
+
+    if (!email || !passValue) {
+      alert("Please enter an email and password.");
+      return;
+    }
+
+    if (passValue.length < 6) {
+      alert("Use a password with at least 6 characters.");
+      return;
+    }
+
+    if (!credentials) {
+      saveAdminCredentials(email, passValue);
       setAuthenticated(true);
       window.location.href = "dashboard.html";
-    } else {
-      alert("Use a password with at least 6 characters.");
+      return;
     }
+
+    if (email === credentials.email && passValue === credentials.password) {
+      setAuthenticated(true);
+      window.location.href = "dashboard.html";
+      return;
+    }
+
+    alert("Email or password is incorrect.");
   });
 };
 
