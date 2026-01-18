@@ -147,12 +147,34 @@ const createGalleryCard = (item, index) => {
   return card;
 };
 
-const readImageFile = (file) => {
+const compressImageFile = (file, options = {}) => {
   if (!file) return Promise.resolve("");
+  const { maxWidth = 720, quality = 0.5 } = options;
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
     reader.onerror = () => reject(reader.error);
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("Image load failed."));
+      img.onload = () => {
+        const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+        const targetWidth = Math.round(img.width * scale);
+        const targetHeight = Math.round(img.height * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Canvas is not supported."));
+          return;
+        }
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve(dataUrl);
+      };
+      img.src = reader.result;
+    };
     reader.readAsDataURL(file);
   });
 };
@@ -486,7 +508,7 @@ const initAdminDashboard = () => {
       let imageData = existing ? existing.imageData : "";
       try {
         if (imageFile) {
-          imageData = await readImageFile(imageFile);
+          imageData = await compressImageFile(imageFile, { maxWidth: 720, quality: 0.5 });
         }
       } catch (error) {
         alert("Image upload failed. Please try again.");
@@ -549,20 +571,61 @@ const initAdminDashboard = () => {
 
   const notesForm = document.querySelector("[data-notes-form]");
   const notesList = document.querySelector("[data-notes-admin]");
+  const notesSubmit = document.querySelector("[data-notes-submit]");
+  const notesCancel = document.querySelector("[data-notes-cancel]");
+
+  const startNoteEdit = (note) => {
+    if (!notesForm) return;
+    notesForm.dataset.editId = note.id;
+    notesForm.title.value = note.title;
+    notesForm.date.value = note.date;
+    notesForm.category.value = note.category;
+    notesForm.content.value = note.content;
+    if (notesSubmit) notesSubmit.textContent = "Update Note";
+    if (notesCancel) notesCancel.style.display = "inline-flex";
+  };
+
+  const resetNotesForm = () => {
+    if (!notesForm) return;
+    notesForm.reset();
+    delete notesForm.dataset.editId;
+    if (notesSubmit) notesSubmit.textContent = "Publish Note";
+    if (notesCancel) notesCancel.style.display = "none";
+  };
 
   const renderNotesAdmin = () => {
     if (!notesList) return;
     notesList.innerHTML = "";
     notes.forEach((note) => {
       const row = document.createElement("div");
-      row.className = "note-item";
-      row.innerHTML = `
-        <div>
-          <strong>${note.title}</strong><br />
-          <span>${note.category} · ${formatDate(note.date)}</span>
-        </div>
-        <button class="button" data-remove-note="${note.id}">Remove</button>
-      `;
+      row.className = "note-item admin-row";
+
+      const info = document.createElement("div");
+      const title = document.createElement("strong");
+      title.textContent = note.title;
+      const meta = document.createElement("span");
+      meta.textContent = `${note.category} · ${formatDate(note.date)}`;
+      info.appendChild(title);
+      info.appendChild(document.createElement("br"));
+      info.appendChild(meta);
+
+      const actions = document.createElement("div");
+      actions.className = "admin-actions";
+      const editBtn = document.createElement("button");
+      editBtn.className = "button";
+      editBtn.type = "button";
+      editBtn.textContent = "Edit";
+      editBtn.setAttribute("data-edit-note", note.id);
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "button";
+      removeBtn.type = "button";
+      removeBtn.textContent = "Remove";
+      removeBtn.setAttribute("data-remove-note", note.id);
+      actions.appendChild(editBtn);
+      actions.appendChild(removeBtn);
+
+      row.appendChild(info);
+      row.appendChild(actions);
       notesList.appendChild(row);
     });
   };
@@ -570,16 +633,22 @@ const initAdminDashboard = () => {
   if (notesForm) {
     notesForm.addEventListener("submit", (event) => {
       event.preventDefault();
+      const editId = notesForm.dataset.editId;
       const newNote = {
-        id: `note-${Date.now()}`,
+        id: editId || `note-${Date.now()}`,
         title: notesForm.title.value,
         date: notesForm.date.value,
         category: notesForm.category.value,
         content: notesForm.content.value
       };
-      notes.unshift(newNote);
+      if (editId) {
+        const index = notes.findIndex((note) => note.id === editId);
+        notes.splice(index, 1, newNote);
+      } else {
+        notes.unshift(newNote);
+      }
       saveData(STORAGE_KEYS.notes, notes);
-      notesForm.reset();
+      resetNotesForm();
       renderNotesAdmin();
     });
   }
@@ -588,6 +657,12 @@ const initAdminDashboard = () => {
     notesList.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
+      const editId = target.getAttribute("data-edit-note");
+      if (editId) {
+        const note = notes.find((entry) => entry.id === editId);
+        if (note) startNoteEdit(note);
+        return;
+      }
       const removeId = target.getAttribute("data-remove-note");
       if (!removeId) return;
       const index = notes.findIndex((note) => note.id === removeId);
@@ -595,7 +670,16 @@ const initAdminDashboard = () => {
         notes.splice(index, 1);
         saveData(STORAGE_KEYS.notes, notes);
         renderNotesAdmin();
+        if (notesForm && notesForm.dataset.editId === removeId) {
+          resetNotesForm();
+        }
       }
+    });
+  }
+
+  if (notesCancel) {
+    notesCancel.addEventListener("click", () => {
+      resetNotesForm();
     });
   }
 
